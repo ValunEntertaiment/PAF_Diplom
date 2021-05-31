@@ -36,14 +36,11 @@ namespace PAF.ViewModel
         }
         DataRowView _SelectedClient;
 
-        
-
-
         SqlDataAdapter adapter;
         DataTable DataTable;
         DataTable SubTable;
         string connectionString = "Data Source=C-PROG4;Initial Catalog=PAF;Integrated Security=True";
-            //ConfigurationManager.ConnectionStrings[0].ConnectionString;
+        //ConfigurationManager.ConnectionStrings[0].ConnectionString;
 
         string query = "SELECT "+
                            "Id код, "+
@@ -75,8 +72,9 @@ namespace PAF.ViewModel
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     adapter = new SqlDataAdapter(query, connection);
-                    Clients = new DataTable();
-                    adapter.Fill(Clients);
+                    DataTable Clients1 = new DataTable();
+                    adapter.Fill(Clients1);
+                    Clients = Clients1;
                 }
 
             }
@@ -97,8 +95,9 @@ namespace PAF.ViewModel
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     adapter = new SqlDataAdapter(subQuery, connection);
-                    Sales = new DataTable();
-                    adapter.Fill(Sales);
+                    DataTable Sales1 = new DataTable();
+                    adapter.Fill(Sales1);
+                    Sales = Sales1;
                 }
 
             }

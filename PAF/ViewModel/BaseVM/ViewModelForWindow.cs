@@ -8,6 +8,14 @@ namespace PAF.ViewModel
 {
     public class ViewModelForWindow : INotifyPropertyChanged
     {
+        public int Width { get => _Width; set { if (value >= 1150) Set(ref _Height, value); } }
+        public int Height { get => _Height; set {if(value>=600) Set(ref _Height, value); } }
+
+        int _Height = 600;
+        int _Width = 1150;
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)

@@ -3,24 +3,21 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:vm="clr-namespace:PAF.ViewModel"
-      xmlns:enum="clr-namespace:PAF.Data.Entityies"
-      xmlns:date="clr-namespace:PAF.Data.Entityies"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:core="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Client">
+      MinHeight="400" MinWidth="800" >
     <Page.DataContext>
         <vm:ClientVM/>
     </Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
         <!--основная таблица-->
         <DataGrid x:Name="dg" ItemsSource="{Binding Clients, Mode=TwoWay}" SelectionMode="Single"
