@@ -48,10 +48,7 @@
         <!--Центр-->
         <StackPanel Grid.Column="2" Grid.Row="2">
             <Grid>
-                <Frame Height="200" Content="{Binding ContentPage}" NavigationUIVisibility="Hidden"/>
-            </Grid>
-            <Grid>
-                <Frame Height="200" Content="{Binding ContentPage}" NavigationUIVisibility="Hidden" Visibility="{Binding SecondTable}"/>
+                <Frame Content="{Binding ContentPage}" NavigationUIVisibility="Hidden"/>
             </Grid>
         </StackPanel>
 

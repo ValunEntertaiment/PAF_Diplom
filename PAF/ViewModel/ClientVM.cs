@@ -20,7 +20,93 @@ namespace PAF.ViewModel
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
-        public Clients SelectedClient { get; set; }
+        public DataRowView SelectedClient 
+        {
+            get => _SelectedClient; 
+            set 
+            {
+               
+                Set(ref _SelectedClient, value);
+                if (SelectedClient != null)
+                {
+                    
+                    SubRefresh(SelectedClient.Row.ItemArray[0]);
+                }
+            }
+        }
+        DataRowView _SelectedClient;
+
+        
+
+
+        SqlDataAdapter adapter;
+        DataTable DataTable;
+        DataTable SubTable;
+        string connectionString = "Data Source=C-PROG4;Initial Catalog=PAF;Integrated Security=True";
+            //ConfigurationManager.ConnectionStrings[0].ConnectionString;
+
+        string query = "SELECT "+
+                           "Id код, "+
+                           "LastName Фамилия, "+
+	                       "FirstName Имя, "+
+	                       "MiddleName Отчество, "+
+	                       "CASE Gender "+
+                               "when 1 then 'Жен' "+
+		                       "when 0 then 'Муж' "+
+	                       "END Пол, "+
+                           "Phone Телефон "+
+                       "FROM "+
+                       "Clients ";
+
+        string subQuery = "select SalesCompositions.* "+
+                          "from SalesCompositions "+
+                          "left join Sales on Sales.Id = SalesCompositions.Sale_Id "+
+                          "inner join Clients on Sales.Client_Id = Clients.Id ";
+
+        public DataTable Clients { get => DataTable; set => Set(ref DataTable, value); }
+
+        public DataTable Sales { get => SubTable; set => Set(ref SubTable, value); }
+
+        private void Refresh()
+        {
+            
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    adapter = new SqlDataAdapter(query, connection);
+                    Clients = new DataTable();
+                    adapter.Fill(Clients);
+                }
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
+        private void SubRefresh(object id)
+        {
+            subQuery = "select SalesCompositions.* " +
+                          "from SalesCompositions " +
+                          "left join Sales on Sales.Id = SalesCompositions.Sale_Id " +
+                          "inner join Clients on Sales.Client_Id = Clients.Id " +
+                          $"where Clients.id = {(int)id}";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    adapter = new SqlDataAdapter(subQuery, connection);
+                    Sales = new DataTable();
+                    adapter.Fill(Sales);
+                }
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
 
         #region Commands
 
@@ -31,7 +117,7 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            new SQLClient().UpdateClient(_Client);
+            //new SQLClient().UpdateClient(_Client);
             CanButtonClick = true;
         }
         #endregion
@@ -55,20 +141,22 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            Clients = new SQLClient().SelectClientToObservableCollection();
+            Refresh();
+           // Clients = new SQLClient().SelectClientToObservableCollection();
             CanButtonClick = true;
         }
         #endregion
 
         #region DeleteCommand
         public ICommand DeleteCommand { get; set; }
+
         private bool CanDeleteExecute(object p) => CanButtonClick;
         private void OnDeleteExecuted(object p)
         {
             if(SelectedClient != null)
             {
                 CanButtonClick = false;
-                new SQLClient().DeleteClient(SelectedClient);
+                //new SQLClient().DeleteClient(SelectedClient);
                 CanButtonClick = true;
                 OnUpdateExecuted(null);
             }
@@ -77,9 +165,9 @@ namespace PAF.ViewModel
 
         #endregion
 
-        public ObservableCollection<Clients> Clients { get => _Client; set => Set(ref _Client, value); }
-        
-        ObservableCollection<Clients> _Client = new SQLClient().SelectClientToObservableCollection();
+        //public ObservableCollection<Clients> Clients { get => _Client; set => Set(ref _Client, value); }
+
+        //ObservableCollection<Clients> _Client = new SQLClient().SelectClientToObservableCollection();
 
         public ClientVM()
         {
@@ -89,6 +177,7 @@ namespace PAF.ViewModel
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
             DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
             #endregion
+            Refresh();
         }
     }
 }
