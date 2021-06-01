@@ -1,82 +1,70 @@
 ﻿using PAF.Commands.Base;
-using System.Configuration;
-using PAF.Data.Classes;
-using PAF.Data.Clases;
 using PAF.View.Windows;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
 using System.Data.SqlClient;
 using System.Data;
 using System;
-using PAF.Data.Entityies;
+using PAF.ViewModel.BaseVM;
+using System.Configuration;
 
 namespace PAF.ViewModel
 {
-    public class ClientVM : ViewModelForWindow
+    public class ClientVM : ViewModelForWindow, IPage
     {
+        #region Properties
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
-        public DataRowView SelectedClient 
+        public DataRowView SelectedClient
         {
-            get => _SelectedClient; 
-            set 
+            get => _SelectedClient;
+            set
             {
-               
                 Set(ref _SelectedClient, value);
                 if (SelectedClient != null)
                 {
-                    
                     SubRefresh(SelectedClient.Row.ItemArray[0]);
                 }
             }
         }
         DataRowView _SelectedClient;
 
-        SqlDataAdapter adapter;
-        DataTable DataTable;
-        DataTable SubTable;
-        string connectionString = "Data Source=C-PROG4;Initial Catalog=PAF;Integrated Security=True";
-        //ConfigurationManager.ConnectionStrings[0].ConnectionString;
-
-        string query = "SELECT "+
-                           "Id код, "+
-                           "LastName Фамилия, "+
-	                       "FirstName Имя, "+
-	                       "MiddleName Отчество, "+
-	                       "CASE Gender "+
-                               "when 1 then 'Жен' "+
-		                       "when 0 then 'Муж' "+
-	                       "END Пол, "+
-                           "Phone Телефон "+
-                       "FROM "+
-                       "Clients ";
-
-        string subQuery = "select SalesCompositions.* "+
-                          "from SalesCompositions "+
-                          "left join Sales on Sales.Id = SalesCompositions.Sale_Id "+
-                          "inner join Clients on Sales.Client_Id = Clients.Id ";
-
-        public DataTable Clients { get => DataTable; set => Set(ref DataTable, value); }
+        public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
+        DataTable _DataTable;
 
         public DataTable Sales { get => SubTable; set => Set(ref SubTable, value); }
+        DataTable SubTable;
+
+        public int Width { get => _Width; set => Set(ref _Width, value); }
+        int _Width = 800;
+        
+        public int Height { get => _Height; set => Set(ref _Height, value); }
+        int _Height = 475;
+        #endregion
 
         private void Refresh()
         {
-            
+            string query = "SELECT " +
+                           "Id код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 1 then 'Жен' " +
+                               "when 0 then 'Муж' " +
+                           "END Пол, " +
+                           "Phone Телефон " +
+                       "FROM Clients";
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
-                    adapter = new SqlDataAdapter(query, connection);
-                    DataTable Clients1 = new DataTable();
-                    adapter.Fill(Clients1);
-                    Clients = Clients1;
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
                 }
-
             }
             catch (Exception x)
             {
@@ -85,19 +73,25 @@ namespace PAF.ViewModel
         }
         private void SubRefresh(object id)
         {
-            subQuery = "select SalesCompositions.* " +
-                          "from SalesCompositions " +
-                          "left join Sales on Sales.Id = SalesCompositions.Sale_Id " +
-                          "inner join Clients on Sales.Client_Id = Clients.Id " +
-                          $"where Clients.id = {(int)id}";
+              string subQuery = "select " +
+                                    "SalesCompositions.Id Код, " +
+                                    "SalesCompositions.Price Цена, " +
+                                    "SalesCompositions.Amount Количество, " +
+                                    "SalesCompositions.Sum Сумма, " +
+                                    "Components.Name Товар " +
+                                "from SalesCompositions " +
+                                    "left join Sales on Sales.Id = SalesCompositions.Sale_Id " +
+                                    "inner join Clients on Sales.Client_Id = Clients.Id " +
+                                    "inner join Components on Components.Id = SalesCompositions.Component_Id " +
+                                $"where Clients.id = {(int)id}";
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
-                    adapter = new SqlDataAdapter(subQuery, connection);
-                    DataTable Sales1 = new DataTable();
-                    adapter.Fill(Sales1);
-                    Sales = Sales1;
+                    SqlDataAdapter adapter = new SqlDataAdapter(subQuery, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    Sales = temp; //добавил temp чтобы срабатывал set у свойства
                 }
 
             }
@@ -127,7 +121,7 @@ namespace PAF.ViewModel
         private void OnAddExecuted(object p)
         {
             CanButtonClick = false;
-            ClientAdd clientAdd = new ClientAdd();
+            ClientAdd clientAdd = new ClientAdd(new ClientVM());
             clientAdd.ShowDialog();
             CanButtonClick = true;
             OnUpdateExecuted(null);
@@ -148,6 +142,7 @@ namespace PAF.ViewModel
 
         #region DeleteCommand
         public ICommand DeleteCommand { get; set; }
+        
 
         private bool CanDeleteExecute(object p) => CanButtonClick;
         private void OnDeleteExecuted(object p)
@@ -164,9 +159,20 @@ namespace PAF.ViewModel
 
         #endregion
 
-        //public ObservableCollection<Clients> Clients { get => _Client; set => Set(ref _Client, value); }
+        public ClientVM(ref int Width, ref int Height)
+        {
+            #region Commands
+            SaveChangesCommand = new LambdaCommand(OnSaveChangesExecuted, CanSaveChangesExecute);
+            AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
+            UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
+            DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
+            #endregion
 
-        //ObservableCollection<Clients> _Client = new SQLClient().SelectClientToObservableCollection();
+            Refresh();
+            
+            this.Width = Width >=1150?Width - 350:800;          //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
+            this.Height = Height >= 600 ? Height - 80 : 520;   //600 минимальная высота окна. 125-Сумма высоты всех статичных элементов. 475-Минимальная высота страницы
+        }
 
         public ClientVM()
         {
@@ -176,6 +182,7 @@ namespace PAF.ViewModel
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
             DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
             #endregion
+
             Refresh();
         }
     }

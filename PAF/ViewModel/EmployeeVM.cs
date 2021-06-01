@@ -1,21 +1,108 @@
 ﻿using PAF.Commands.Base;
-using PAF.Data;
-using PAF.Data.Classes;
-using PAF.Data.Entityies;
-using PAF.Data.Clases;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using PAF.View.Windows;
+using System.Data;
+using System.Data.SqlClient;
+using System;
+using System.Configuration;
+using PAF.ViewModel.BaseVM;
 
 namespace PAF.ViewModel
 {
-    class EmployeeVM : ViewModel
+    class EmployeeVM : ViewModel, IPage
     {
+        #region Properties
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
-        public Employees SelectedEmployee { get; set; }
+        public DataRowView SelectedEmployee
+        {
+            get => _SelectedEmployee;
+            set
+            {
+                Set(ref _SelectedEmployee, value);
+                if (SelectedEmployee != null)
+                {
+                    SubRefresh(SelectedEmployee.Row.ItemArray[0]);
+                }
+            }
+        }
+        DataRowView _SelectedEmployee;
+
+        public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
+        DataTable _DataTable;
+
+        public DataTable Sales { get => SubTable; set => Set(ref SubTable, value); }
+        DataTable SubTable;
+
+        public int Width { get => _Width; set => Set(ref _Width, value); }
+        int _Width = 800;
+
+        public int Height { get => _Height; set => Set(ref _Height, value); }
+        int _Height = 475;
+        #endregion
+
+        private void Refresh()
+        {
+            string query = "SELECT " +
+                           "Id код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 1 then 'Жен' " +
+                               "when 0 then 'Муж' " +
+                           "END Пол, " +
+                           "Salary Зарплата, " +
+                           "[Login] Логин, " +
+                           "[Password] Пароль, " +
+                           "Role Роль " +
+                       "FROM Employees";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
+        private void SubRefresh(object id)
+        {
+            string subQuery =
+                        "select " +
+                            "SalesCompositions.Id код, " +
+                            "SalesCompositions.Price Цена, " +
+                            "SalesCompositions.Amount Количество, " +
+                            "SalesCompositions.Sum Сумма, " +
+                            "Components.Name Товар " +
+                        "from SalesCompositions " +
+                            "left join Sales on Sales.Id = SalesCompositions.Sale_Id " +
+                            "inner join Employees on Sales.Employee_Id = Employees.Id " +
+                            "inner join Components on Components.Id = SalesCompositions.Component_Id " +
+                        $"where Employees.id = {(int)id} ";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(subQuery, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    Sales = temp; //добавил temp чтобы срабатывал set у свойства
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
 
         #region Commands
 
@@ -25,7 +112,7 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            new SQLEmployee().UpdateEmployee(_Employees);
+            //ew SQLEmployee().UpdateEmployee(_Employees);
             CanButtonClick = true;
         }
         #endregion
@@ -49,7 +136,8 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            Employees = new SQLEmployee().SelectEmployee();
+            Refresh();
+            //Employees = new SQLEmployee().SelectEmployee();
             CanButtonClick = true;
         }
         #endregion
@@ -62,7 +150,7 @@ namespace PAF.ViewModel
             if (SelectedEmployee != null)
             {
                 CanButtonClick = false;
-                new SQLEmployee().DeleteEmployee(SelectedEmployee);
+                //new SQLEmployee().DeleteEmployee(SelectedEmployee);
                 CanButtonClick = true;
                 OnUpdateExecuted(null);
             }
@@ -71,8 +159,23 @@ namespace PAF.ViewModel
 
         #endregion
 
-        public List<Employees> Employees { get => _Employees; set => Set(ref _Employees, value); }
-        List<Employees> _Employees = new SQLEmployee().SelectEmployee();
+        //public List<Employees> Employees { get => _Employees; set => Set(ref _Employees, value); }
+        //List<Employees> _Employees = new SQLEmployee().SelectEmployee();
+
+        public EmployeeVM(ref int Width, ref int Height)
+        {
+            #region Commands
+            SaveChangesCommand = new LambdaCommand(OnSaveChangesExecuted, CanSaveChangesExecute);
+            AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
+            UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
+            DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
+            #endregion
+
+            Refresh();
+
+            this.Width = Width >= 1150 ? Width - 350 : 800;          //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
+            this.Height = Height >= 600 ? Height - 80 : 520;   //600 минимальная высота окна. 125-Сумма высоты всех статичных элементов. 475-Минимальная высота страницы
+        }
 
         public EmployeeVM()
         {
@@ -82,6 +185,8 @@ namespace PAF.ViewModel
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
             DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
             #endregion
+
+            Refresh();
         }
     }
 }
