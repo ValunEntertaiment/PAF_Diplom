@@ -1,6 +1,6 @@
 ﻿using PAF.Commands.Base;
 using PAF.View.Pages;
-using System;
+using PAF.ViewModel.BaseVM;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,12 +9,17 @@ namespace PAF.ViewModel
 {
     class MainWindowVM : ViewModelForWindow
     {
+        public IPage Page { get => _Page; set => Set(ref _Page, value); }
+
+        static IPage _Page = new ClientVM(ref _Width, ref _Height);
+
         /// <summary> основная таблица </summary>
         public Page ContentPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
-        Page _ContentPage = new Client();
+        Page _ContentPage = new Client(_Page);
+
         /// <summary> второстепенная таблица </summary>
         public Page SubPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
-        Page _SubPage = new Client();
+        Page _SubPage = new Client(_Page);
 
         /// <summary> видно ли преключатель для второстепенной формы</summary>
         public Visibility RadioButtonVisible { get => _RadioButtonVisible; set => Set(ref _RadioButtonVisible, value); }
@@ -23,26 +28,6 @@ namespace PAF.ViewModel
         /// <summary> видно ли вторую таблицу </summary>
         public Visibility SecondTable { get => _SecondTable; set => Set(ref _SecondTable, value); }
         Visibility _SecondTable = Visibility.Hidden;
-
-       public bool ToggleButton
-        {
-            get => _ToggleButton;
-            set
-            {
-                if (value)
-                {
-                    SecondTable = Visibility.Visible;
-                    MessageBox.Show("вторую таблицу видно");
-                }
-                else
-                {
-                    SecondTable = Visibility.Hidden;
-                    MessageBox.Show("вторую таблицу не видно");
-                }
-                Set(ref _ToggleButton, value);
-            }
-        }
-       bool _ToggleButton = false;
 
         #region Commands
 
@@ -70,7 +55,7 @@ namespace PAF.ViewModel
         private bool CanSClientsExecute(object p) => true;
         private void OnSClientsExecuted(object p)
         {
-            ContentPage = new Client();
+            ContentPage = new Client(_Page);
             RadioButtonVisible = Visibility.Hidden;
         }
         #endregion
@@ -80,6 +65,7 @@ namespace PAF.ViewModel
         private bool CanSelectSalesExecute(object p) => true;
         private void OnSelectSalesExecuted(object p)
         {
+            _Page = new SalayVM();
             ContentPage = new Salay();
             RadioButtonVisible = Visibility.Hidden;
         }
@@ -136,6 +122,12 @@ namespace PAF.ViewModel
         #endregion
         #endregion
 
+        public int Width { get => _Width; set => Set(ref _Width, value); }
+        public int Height { get => _Height; set => Set(ref _Height, value); }
+
+        static int _Width = 1150;
+
+        static int _Height = 600;
         public MainWindowVM()
         {
             #region Commands
@@ -150,6 +142,9 @@ namespace PAF.ViewModel
             SelectTypes = new LambdaCommand(OnSelectTypesExecuted, CanSelectTypesExecute);
             SelectSupplies = new LambdaCommand(OnSelectSuppliesExecuted, CanSelectSuppliesExecute);
             #endregion
+
+            IPage page;
+            page = new ClientVM(ref _Width, ref _Height);
         }
     }
 }

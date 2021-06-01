@@ -2,14 +2,18 @@
 using PAF.Data;
 using PAF.Data.Entityies;
 using PAF.View.Windows;
+using PAF.ViewModel.BaseVM;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PAF.ViewModel
 {
-    class SalayVM : ViewModelForWindow
+    class SalayVM : ViewModelForWindow, IPage
     {
+        public DataTable DataTable { get; set; }
+
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
@@ -79,6 +83,7 @@ namespace PAF.ViewModel
         #endregion
 
         public List<Sales> Sales { get => _Sales; set => Set(ref _Sales, value); }
+
         List<Sales> _Sales = new SQL().SelectSalay();
 
         public SalayVM()
@@ -92,5 +97,4 @@ namespace PAF.ViewModel
             #endregion
         }
     }
-
 }
