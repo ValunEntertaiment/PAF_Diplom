@@ -1,6 +1,7 @@
 ﻿using PAF.Data.Clases;
 using PAF.Data.Entityies;
 using PAF.ViewModel;
+using PAF.ViewModel.BaseVM;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -14,10 +15,10 @@ namespace PAF.View.Windows
     {
         Clients client = new Clients();
 
-        public ClientAdd()
+        public ClientAdd(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new ClientVM();
+            this.DataContext = page;
             ClientGender.ItemsSource = Enum.GetValues(typeof(Genders));
             ClientGender.SelectedValue = Genders.Муж;
         }
