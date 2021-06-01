@@ -7,7 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:core="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
-      MinHeight="400" MinWidth="800" >
+      Height="{Binding Height}" Width="{Binding Width}" >
     <Page.DataContext>
         <vm:ClientVM/>
     </Page.DataContext>
@@ -17,10 +17,10 @@
             <RowDefinition Height="45" />
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="45" />
+            <!--<RowDefinition Height="45" />-->
         </Grid.RowDefinitions>
         <!--основная таблица-->
-        <DataGrid x:Name="dg" ItemsSource="{Binding Clients, Mode=TwoWay}" SelectionMode="Single"
+        <DataGrid x:Name="dg" ItemsSource="{Binding DataTable, Mode=TwoWay}" SelectionMode="Single"
                   SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}" CanUserAddRows="False">
         </DataGrid>
         <!--кнопочки основной таблицы-->
@@ -40,11 +40,11 @@
                    CanUserAddRows="False">
         </DataGrid>
         <!--кнопочки второстепенной таблицы-->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+        <!--<StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button ToolTip="Сохранить внесенные изменения" Margin="0 0 100 0" Content="Внести изменения" Command="{Binding SaveChangesCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Добавить новую запись" Margin="0 0 100 0" Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Удалить выбранную запись" Margin="0 0 100 0" Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Page>
