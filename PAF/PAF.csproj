@@ -98,6 +98,7 @@
     <Compile Include="Data\MSSQL\SQLSupply.cs" />
     <Compile Include="Data\MSSQL\SQLType.cs" />
     <Compile Include="Data\Classes\Status.cs" />
+    <Compile Include="ViewModel\BaseVM\IPage.cs" />
     <Compile Include="ViewModel\DeliveryCompositionVM.cs" />
     <Compile Include="ViewModel\DeliveryVM.cs" />
     <Compile Include="ViewModel\SalayCompositionVM.cs" />
