@@ -1,14 +1,18 @@
 ﻿using PAF.Commands.Base;
 using PAF.Data;
 using PAF.Data.Entityies;
+using PAF.ViewModel.BaseVM;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PAF.ViewModel
 {
-    class TypeVM : ViewModel
+    class TypeVM : ViewModel, IPage
     {
+        public DataTable DataTable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
@@ -52,6 +56,7 @@ namespace PAF.ViewModel
         #endregion
 
         public List<Types> Types { get => _Types; set => Set(ref _Types, value); }
+
         List<Types> _Types = new SQL().SelectType();
 
         public TypeVM()

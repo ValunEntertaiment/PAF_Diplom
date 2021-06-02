@@ -7,10 +7,11 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System;
+using PAF.ViewModel.BaseVM;
 
 namespace PAF.ViewModel
 {
-    class ComponentVM : ViewModel
+    class ComponentVM : ViewModel, IPage
     {
         #region Properties
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
@@ -71,7 +72,7 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            Components = new SQLComponent().Select();
+            //Refresh();
             CanButtonClick = true;
         }
         #endregion

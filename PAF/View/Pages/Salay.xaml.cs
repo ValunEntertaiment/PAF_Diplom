@@ -1,4 +1,5 @@
 ﻿using PAF.ViewModel;
+using PAF.ViewModel.BaseVM;
 using System.Windows.Controls;
 
 namespace PAF.View.Pages
@@ -8,10 +9,10 @@ namespace PAF.View.Pages
     /// </summary>
     public partial class Salay : Page
     {
-        public Salay()
+        public Salay(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new SalayVM();
+            this.DataContext = page;
         }
     }
 }

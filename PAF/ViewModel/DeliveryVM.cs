@@ -2,14 +2,17 @@
 using PAF.Data;
 using PAF.Data.Entityies;
 using PAF.View.Windows;
+using PAF.ViewModel.BaseVM;
 using System.Collections.Generic;
+using System.Data;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PAF.ViewModel
 {
-    class DeliveryVM : ViewModelForWindow
+    class DeliveryVM : ViewModelForWindow, IPage
     {
+        public DataTable DataTable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
@@ -79,6 +82,8 @@ namespace PAF.ViewModel
         #endregion
 
         public List<Deliveries> Deliveries { get => _Deliveries; set => Set(ref _Deliveries, value); }
+       
+
         List<Deliveries> _Deliveries = new SQL().SelectDelivery();
 
         public DeliveryVM()

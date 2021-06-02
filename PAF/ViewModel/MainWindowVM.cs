@@ -21,14 +21,6 @@ namespace PAF.ViewModel
         public Page SubPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
         Page _SubPage = new Client(_Page);
 
-        /// <summary> видно ли преключатель для второстепенной формы</summary>
-        public Visibility RadioButtonVisible { get => _RadioButtonVisible; set => Set(ref _RadioButtonVisible, value); }
-        Visibility _RadioButtonVisible = Visibility.Collapsed;
-
-        /// <summary> видно ли вторую таблицу </summary>
-        public Visibility SecondTable { get => _SecondTable; set => Set(ref _SecondTable, value); }
-        Visibility _SecondTable = Visibility.Hidden;
-
         #region Commands
 
         #region LogoutCommand
@@ -55,8 +47,8 @@ namespace PAF.ViewModel
         private bool CanSClientsExecute(object p) => true;
         private void OnSClientsExecuted(object p)
         {
+            Page = new ClientVM();
             ContentPage = new Client(_Page);
-            RadioButtonVisible = Visibility.Hidden;
         }
         #endregion
 
@@ -65,9 +57,8 @@ namespace PAF.ViewModel
         private bool CanSelectSalesExecute(object p) => true;
         private void OnSelectSalesExecuted(object p)
         {
-            _Page = new SalayVM();
-            ContentPage = new Salay();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new SalayVM();
+            ContentPage = new Salay(Page);
         }
         #endregion
 
@@ -76,8 +67,8 @@ namespace PAF.ViewModel
         private bool CanSEmployeesExecute(object p) => true;
         private void OnSEmployeesExecuted(object p)
         {
-            ContentPage = new Employee();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new EmployeeVM();
+            ContentPage = new Employee(Page);
         }
         #endregion
 
@@ -86,8 +77,8 @@ namespace PAF.ViewModel
         private bool CanSelectDeliveriesExecute(object p) => true;
         private void OnSelectDeliveriesExecuted(object p)
         {
-            ContentPage = new Delivery();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new DeliveryVM();
+            ContentPage = new Delivery(Page);
         }
         #endregion
 
@@ -96,8 +87,8 @@ namespace PAF.ViewModel
         private bool CanSelectComponentsExecute(object p) => true;
         private void OnSelectComponentsExecuted(object p)
         {
-            ContentPage = new Component();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new ComponentVM();
+            ContentPage = new Component(Page);
         }
         #endregion
 
@@ -106,8 +97,8 @@ namespace PAF.ViewModel
         private bool CanSelectTypesExecute(object p) => true;
         private void OnSelectTypesExecuted(object p)
         {
-            ContentPage = new View.Pages.Type();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new TypeVM();
+            ContentPage = new View.Pages.Type(Page);
         }
         #endregion
 
@@ -116,8 +107,8 @@ namespace PAF.ViewModel
         private bool CanSelectSuppliesExecute(object p) => true;
         private void OnSelectSuppliesExecuted(object p)
         {
-            ContentPage = new Supply();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new SupplyVM();
+            ContentPage = new Supply(Page);
         }
         #endregion
         #endregion
