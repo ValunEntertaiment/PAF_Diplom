@@ -41,8 +41,8 @@ namespace PAF.ViewModel
         {
             CanButtonClick = false;
             //AddClient = new Clients();
-            DeliveryAdd deliveryAdd = new DeliveryAdd();
-            deliveryAdd.ShowDialog();
+            //DeliveryAdd deliveryAdd = new DeliveryAdd();
+            //deliveryAdd.ShowDialog();
             CanButtonClick = true;
         }
         #endregion

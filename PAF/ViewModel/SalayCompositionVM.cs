@@ -3,8 +3,11 @@ using PAF.Data;
 using PAF.Data.Entityies;
 using PAF.View.Windows;
 using PAF.ViewModel.BaseVM;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,14 +15,46 @@ namespace PAF.ViewModel
 {
     class SalayCompositionVM : ViewModelForWindow, IPage
     {
-        public DataTable DataTable { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        
 
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
-        SalesCompositions _AddSalesCompositions = new SalesCompositions();
         /// <summary>Данные нового товара</summary>
         public SalesCompositions AddSalesCompositions { get => _AddSalesCompositions; set => Set(ref _AddSalesCompositions, value); }
+        SalesCompositions _AddSalesCompositions = new SalesCompositions();
+
+        public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
+        DataTable _DataTable;
+
+        private void Refresh()
+        {
+            string query = "SELECT " +
+                           "Id код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 1 then 'Жен' " +
+                               "when 0 then 'Муж' " +
+                           "END Пол, " +
+                           "Phone Телефон " +
+                       "FROM Clients";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
 
         #region Commands
 

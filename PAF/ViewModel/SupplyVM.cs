@@ -1,7 +1,6 @@
 ﻿using PAF.Commands.Base;
 using PAF.Data;
 using PAF.Data.Entityies;
-using PAF.View.Windows;
 using PAF.ViewModel.BaseVM;
 using System.Collections.Generic;
 using System.Data;
@@ -41,8 +40,8 @@ namespace PAF.ViewModel
         {
             CanButtonClick = false;
             //AddClient = new Clients();
-            SupplyAdd supplyAdd = new SupplyAdd();
-            supplyAdd.ShowDialog();
+            //SupplyAdd supplyAdd = new SupplyAdd();
+            //supplyAdd.ShowDialog();
             CanButtonClick = true;
         }
         #endregion

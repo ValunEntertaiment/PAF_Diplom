@@ -288,7 +288,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Поставка.sql" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo.png" />
   </ItemGroup>
