@@ -63,21 +63,19 @@ namespace PAF.ViewModel
         {
             CanButtonClick = false;
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Text files(*.csv) | *.csv";
-            DateTime dateTime = DateTime.Now;
-            //folderBrowserDialog.ShowDialog
-            saveFileDialog.FileName = "Товары на " + dateTime.ToString("dd MM yyyy");
+
+            saveFileDialog.Filter = "Text files(*.csv) | *.csv"; //формат файла
+
+            DateTime dateTime = DateTime.Now; //название формируется по текущей дате
+
+            saveFileDialog.FileName = "Товары на " + dateTime.ToString("dd MM yyyy"); //название файла
+
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string path = saveFileDialog.FileName;
                 DataRow[] dr = _DataTable.Select();
-                //FileInfo fi1 = new FileInfo(path);
-
-                //File.Create(path);
-                //File.AppendAllText(path, "текст");
 
                 StreamWriter file = new StreamWriter(path);
-                //записать в него
                 bool first = true;
                 foreach (var item in _DataTable.Columns)
                 {
@@ -93,7 +91,6 @@ namespace PAF.ViewModel
                 {
                     file.WriteLine(item.ItemArray[0] + ";" + item.ItemArray[1] + ";" + item.ItemArray[2] + ";" + item.ItemArray[3] + ";" + item.ItemArray[4]);
                 }
-                //закрыть для сохранения данных
                 file.Close();
             }
             CanButtonClick = true;
