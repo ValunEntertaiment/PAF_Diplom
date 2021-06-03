@@ -99,9 +99,7 @@
     <Compile Include="Data\MSSQL\SQLType.cs" />
     <Compile Include="Data\Classes\Status.cs" />
     <Compile Include="ViewModel\BaseVM\IPage.cs" />
-    <Compile Include="ViewModel\DeliveryCompositionVM.cs" />
     <Compile Include="ViewModel\DeliveryVM.cs" />
-    <Compile Include="ViewModel\SalayCompositionVM.cs" />
     <Compile Include="ViewModel\SalayVM.cs" />
     <Compile Include="Data\MSSQL\SQLEmployee.cs" />
     <Compile Include="ViewModel\TypeVM.cs" />
@@ -119,14 +117,8 @@
     <Compile Include="View\Pages\Delivery.xaml.cs">
       <DependentUpon>Delivery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Pages\DeliveryComposition.xaml.cs">
-      <DependentUpon>DeliveryComposition.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Pages\Salay.xaml.cs">
       <DependentUpon>Salay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Pages\SalayComposition.xaml.cs">
-      <DependentUpon>SalayComposition.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\Supply.xaml.cs">
       <DependentUpon>Supply.xaml</DependentUpon>
@@ -196,15 +188,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Pages\DeliveryComposition.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Pages\Salay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Pages\SalayComposition.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
