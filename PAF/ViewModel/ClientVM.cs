@@ -68,7 +68,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message);
+                MessageBox.Show(x.Message, "Client");
             }
         }
         private void SubRefresh(object id)
@@ -97,7 +97,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message);
+                MessageBox.Show(x.Message,"Client");
             }
         }
 
