@@ -7,7 +7,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        Title="DeliveryAdd" Width="300" Height="450" ResizeMode="NoResize" WindowStyle="None">
+        Title="DeliveryAdd" Width="600" Height="450" ResizeMode="NoResize" WindowStyle="None">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style x:Key="TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignTextBlock}">
@@ -23,6 +23,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
@@ -42,18 +43,17 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="15" Width="250">
-            <Grid>
-                <TextBlock Text="Партия" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Supply, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="Supply" Style="{StaticResource TextBoxStyle}"/>
-            </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Height="50">
             <Grid>
                 <TextBlock Text="Дата поставки" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=DateSupply, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox x:Name="DateSupply" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+        <DataGrid Grid.Row="2" ItemsSource="{Binding DataTable}" 
+                  SelectionMode="Single" SelectedItem="{Binding SelectedSupply}"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" />
             <Button Content="Отмена" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
