@@ -100,6 +100,7 @@
     <Compile Include="Data\MSSQL\SQLType.cs" />
     <Compile Include="Data\Classes\Status.cs" />
     <Compile Include="ViewModel\BaseVM\IPage.cs" />
+    <Compile Include="ViewModel\DeliveryAddVM.cs" />
     <Compile Include="ViewModel\DeliveryVM.cs" />
     <Compile Include="ViewModel\SalayVM.cs" />
     <Compile Include="Data\MSSQL\SQLEmployee.cs" />
