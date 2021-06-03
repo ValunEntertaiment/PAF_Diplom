@@ -1,13 +1,12 @@
 ﻿using PAF.Commands.Base;
-using PAF.Data.Classes;
-using System.Windows;
 using System.Windows.Input;
-using PAF.Data.Entityies;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System;
 using PAF.ViewModel.BaseVM;
+using System.IO;
+using System.Windows.Forms;
 
 namespace PAF.ViewModel
 {
@@ -29,7 +28,16 @@ namespace PAF.ViewModel
 
         private void Refresh()
         {
-            string query = "";
+            string query =
+                    "select "+
+                    "c.Id Код, "+
+                    "c.[Name] 'Наименование товара', "+
+                    "c.Amount Количество, "+
+                    "s.[Name] Поставщик, "+
+                    "t.[name] Тип "+
+                    "from components c "+
+                    "inner join Supplies s on s.Id = c.Supply_Id "+
+                    "inner join Types t on t.Id = c.[Type_Id] ";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
@@ -42,27 +50,54 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message);
+                System.Windows.MessageBox.Show(x.Message);
             }
         }
 
         #region Commands
-
-        #region SaveChangesCommand
-        public ICommand SaveChangesCommand { get; set; }
-        private bool CanSaveChangesExecute(object p) => CanButtonClick;
-        private void OnSaveChangesExecuted(object p)
-        {
-            //new SQLComponent().UpdateComponent(_Components);
-        }
-        #endregion
 
         #region AddCommand
         public ICommand AddCommand { get; set; }
         private bool CanAddExecute(object p) => CanButtonClick;
         private void OnAddExecuted(object p)
         {
-            MessageBox.Show("Hello");
+            CanButtonClick = false;
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text files(*.csv) | *.csv";
+            DateTime dateTime = DateTime.Now;
+            //folderBrowserDialog.ShowDialog
+            saveFileDialog.FileName = "Товары на " + dateTime.ToString("dd MM yyyy");
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = saveFileDialog.FileName;
+                DataRow[] dr = _DataTable.Select();
+                //FileInfo fi1 = new FileInfo(path);
+
+                //File.Create(path);
+                //File.AppendAllText(path, "текст");
+
+                StreamWriter file = new StreamWriter(path);
+                //записать в него
+                bool first = true;
+                foreach (var item in _DataTable.Columns)
+                {
+                    if (first)
+                    {
+                        file.Write(item.ToString());
+                        first = false;
+                    }
+                    file.Write(";" + item.ToString());
+                }
+                file.WriteLine();
+                foreach (var item in dr)
+                {
+                    file.WriteLine(item.ItemArray[0] + ";" + item.ItemArray[1] + ";" + item.ItemArray[2] + ";" + item.ItemArray[3] + ";" + item.ItemArray[4]);
+                }
+                //закрыть для сохранения данных
+                file.Close();
+            }
+            CanButtonClick = true;
+            
         }
         #endregion
 
@@ -72,18 +107,7 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            //Refresh();
-            CanButtonClick = true;
-        }
-        #endregion
-
-        #region DeleteCommand
-        public ICommand DeleteCommand { get; set; }
-        private bool CanDeleteExecute(object p) => CanButtonClick;
-        private void OnDeleteExecuted(object p)
-        {
-            CanButtonClick = false;
-            MessageBox.Show("Delete");
+            Refresh();
             CanButtonClick = true;
         }
         #endregion
@@ -92,10 +116,8 @@ namespace PAF.ViewModel
         public ComponentVM(ref int Width, ref int Height)
         {
             #region Commands
-            SaveChangesCommand = new LambdaCommand(OnSaveChangesExecuted, CanSaveChangesExecute);
             AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
-            DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
             #endregion
 
             Refresh();
@@ -107,11 +129,11 @@ namespace PAF.ViewModel
         public ComponentVM()
         {
             #region Commands
-            SaveChangesCommand = new LambdaCommand(OnSaveChangesExecuted, CanSaveChangesExecute);
             AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
-            DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
             #endregion
+
+            Refresh();
         }
     }
 }
