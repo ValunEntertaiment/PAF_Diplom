@@ -12,6 +12,8 @@ namespace PAF.Data.Entityies
         public Types Type { get; set; }
         /// <summary> Единиц на складе </summary>
         public int Amount { get; set; }
+        /// <summary> Цена товара </summary>
+        public int Price { get; set; }
         /// <summary> Id поставщика </summary>
         public Supplies Supply { get; set; }
         /// <summary> Id состава продажи </summary>

@@ -44,18 +44,18 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Height="50">
-            <Grid>
-                <TextBlock Text="Дата поставки" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=DateSupply, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBox x:Name="DateSupply" Style="{StaticResource TextBoxStyle}"/>
-            </Grid>
+            <StackPanel Orientation="Horizontal" Height="50">
+                <TextBlock Margin="0 0 20 0" Style="{StaticResource TextBlockStyle}" Text="Поставщик"  />
+                <TextBlock Margin="0 0 20 0" Style="{StaticResource TextBlockStyle}" Text="{Binding SupplyName}" />
+            </StackPanel>
         </StackPanel>
 
-        <DataGrid Grid.Row="2" ItemsSource="{Binding DataTable}" 
+        <DataGrid Grid.Row="2" ItemsSource="{Binding DataTable}" IsReadOnly="True" CanUserAddRows="False"
                   SelectionMode="Single" SelectedItem="{Binding SelectedSupply}"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" />
-            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}"/>
+            <Button Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ViewButtonStule}" Margin="0 0 40 0"/>
+            <Button Content="Отмена" Command="{Binding CloseCommand}" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
     </Grid>
 </Window>
