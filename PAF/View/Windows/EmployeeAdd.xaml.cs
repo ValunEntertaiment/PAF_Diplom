@@ -55,8 +55,8 @@ namespace PAF.View.Windows
                     {
                         connection.Open();
                         string q =
-                                    "insert into Clients(LastName,FirstName,MiddleName,Gender,Phone) " +
-                                    $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},'{ employee.Salary}') ";
+                                    "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary) " +
+                                    $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary}) ";
                         SqlCommand command = new SqlCommand(q, connection);
                         command.ExecuteNonQuery();
                         connection.Close();
@@ -65,7 +65,7 @@ namespace PAF.View.Windows
                 }
                 catch (Exception x)
                 {
-                    MessageBox.Show(x.Message, "Employee");
+                    MessageBox.Show(x.Message, "EmployeeAdd");
                 }
             }
             catch
