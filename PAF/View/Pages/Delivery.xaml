@@ -14,12 +14,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding DataTable, Mode=OneWay}" SelectedItem="{Binding SelectedDelivery}" SelectionMode="Single" Height="190"/>
+        <DataGrid ItemsSource="{Binding DataTable, Mode=OneWay}" SelectedItem="{Binding SelectedDelivery}" Height="190"
+                  SelectionMode="Single" CanUserAddRows="False"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button ToolTip="Загрузить" Margin="0 0 100 0" Content="Импорт поставки" Command="{Binding SaveChangesCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="3" ItemsSource="{Binding SubTable, Mode=OneWay}" SelectionMode="Single" Height="190"/>
+        <DataGrid Grid.Row="3" ItemsSource="{Binding SubTable, Mode=OneWay}" Height="190"
+                  SelectionMode="Single" CanUserAddRows="False"/>
     </Grid>
 </Page>

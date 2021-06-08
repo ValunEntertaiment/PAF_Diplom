@@ -20,8 +20,8 @@
             <!--<RowDefinition Height="45" />-->
         </Grid.RowDefinitions>
         <!--основная таблица-->
-        <DataGrid x:Name="dg" ItemsSource="{Binding DataTable, Mode=TwoWay}" SelectionMode="Single"
-                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}" CanUserAddRows="False">
+        <DataGrid x:Name="dg" ItemsSource="{Binding DataTable, Mode=TwoWay}" SelectionMode="Single" CanUserAddRows="False"
+                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}">
         </DataGrid>
         <!--кнопочки основной таблицы-->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -36,8 +36,8 @@
             <TextBlock Text="Показать второстепенную таблицу" VerticalAlignment="Center" />
         </StackPanel>
         <!--Второстепенная таблица-->
-        <DataGrid x:Name="dg1" Grid.Row="3" ItemsSource="{Binding Sales, Mode=TwoWay}" SelectionMode="Single" 
-                   CanUserAddRows="False">
+        <DataGrid x:Name="dg1" Grid.Row="3" ItemsSource="{Binding Sales, Mode=TwoWay}"
+                  SelectionMode="Single" CanUserAddRows="False">
         </DataGrid>
         <!--кнопочки второстепенной таблицы-->
         <!--<StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">

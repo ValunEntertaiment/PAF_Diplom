@@ -11,7 +11,8 @@
             <RowDefinition/>
             <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Sales, Mode=OneWay}" SelectionMode="Single"/>
+        <DataGrid ItemsSource="{Binding DataTable, Mode=OneWay}"
+                  SelectionMode="Single" CanUserAddRows="False"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button ToolTip="Сохранить внесенные изменения" Margin="0 0 100 0" Content="Внести изменения" Command="{Binding SaveChangesCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Добавить новую запись" Margin="0 0 100 0" Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ViewButtonStule}"/>
