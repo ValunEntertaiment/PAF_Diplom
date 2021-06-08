@@ -122,7 +122,7 @@ namespace PAF.ViewModel
                                     "@Component Varchar(255), " +
                                     "@Amount int " +
 
-                            "select @Amount = Amount, @IdComponent = Id" +
+                            "select @Amount = Amount, @IdComponent = Id " +
                             "From Components " +
                             $"where[Name] = '{row[0]}' " +
 

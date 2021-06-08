@@ -112,6 +112,7 @@ namespace PAF.ViewModel
             DeliveryAdd delivery = new DeliveryAdd();
             delivery.ShowDialog();
             CanButtonClick = true;
+            Refresh();
         }
         #endregion
 
