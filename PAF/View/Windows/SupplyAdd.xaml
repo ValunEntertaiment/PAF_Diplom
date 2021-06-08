@@ -53,8 +53,8 @@
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" />
-            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}"/>
+            <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" Click="AddClick"/>
+            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}" Click="CancleClick"/>
         </StackPanel>
     </Grid>
 </Window>
