@@ -99,7 +99,6 @@ namespace PAF.ViewModel
             }
         }
 
-
         #region Commands
 
         #region SaveChangesCommand

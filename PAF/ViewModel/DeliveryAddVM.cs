@@ -92,7 +92,7 @@ namespace PAF.ViewModel
                         connection.Open();
                         string q =
                                     "insert into Deliveries(Date, Supply_Id) " +
-                                    $"values (GetDate(),{ SelectedSupply.Row.ItemArray[0]}) " +
+                                    $@"values (GetDate(),{ SelectedSupply.Row.ItemArray[0]}) " +
                                     "select scope_identity()";
                         SqlCommand command = new SqlCommand(q, connection);
                         
@@ -124,23 +124,23 @@ namespace PAF.ViewModel
 
                             "select @Amount = Amount, @IdComponent = Id " +
                             "From Components " +
-                            $"where[Name] = '{row[0]}' " +
+                            $@"where[Name] = '{row[0]}' " +
 
                             //проверяется поставлялся ли этот товар раньше
                             "if (isnull(@Amount, -1) = -1) " +
                                 "begin " +//Добавяет полное описание и количество
-                                    $"select @IdType = Id from Types where [Name] = '{row[1]}' " +
+                                    $@"select @IdType = Id from Types where [Name] = '{row[1]}' " +
 
 
                                     "if (isnull(@IdType, 0) = 0) " + //если типа нет то он создает его без указания короткого названия
                                        "begin " +
                                             "insert into Types([Name]) " +
-                                            $"values ('{row[1]}') " +
+                                            $@"values (convert(nvarchar(MAX),'{row[1]}'))  " +
                                             "set @IdType = scope_identity() " +
                                         "end " +
                                     "insert into Components([Name],/*Price,*/ Amount, Supply_Id, [Type_Id]) " +
 
-                                    $"values('{row[0]}',/*{row[2]},*/ {row[3]}, {SelectedSupply.Row.ItemArray[0]}, @IdType) " +
+                                    $@"values(N'{row[0]}',/*{row[2]},*/ {row[3]}, {SelectedSupply.Row.ItemArray[0]}, @IdType) " +
 
                                     "set @IdComponent = scope_identity() " +
 
@@ -148,11 +148,11 @@ namespace PAF.ViewModel
 
                                 "end " +
                             "else " + //Данные о товаре уже есть меняется только количество
-                                $"update Components set Amount = @Amount +{row[3]} " +
-                                $"where[Name] = '{row[0]}' " +
+                                $@"update Components set Amount = @Amount +{row[3]} " +
+                                $@"where[Name] = '{row[0]}' " +
                                 "insert into DeliveriesCompositions(Price, Amount, Sum, Component_Id, Delivery_Id) " +
 
-                                    $"values({row[2]},{row[3]},{row[4]},@IdComponent,{Id}) ";
+                                    $@"values({row[2]},{row[3]},{row[4]},@IdComponent,{Id}) ";
                         #endregion
 
                         using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
