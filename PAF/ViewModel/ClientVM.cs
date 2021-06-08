@@ -174,9 +174,29 @@ namespace PAF.ViewModel
         private bool CanDeleteExecute(object p) => CanButtonClick;
         private void OnDeleteExecuted(object p)
         {
-            CanButtonClick = false;
-            Upload();
-            CanButtonClick = true;
+            if (SelectedClient != null)
+            {
+                CanButtonClick = false;
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                    {
+                        connection.Open();
+                        string q =
+                                    "Delete from Clients " +
+                                    $"where Id= {SelectedClient.Row.ItemArray[0]}";
+                        SqlCommand command = new SqlCommand(q, connection);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message, "EmployeeAdd");
+                }
+                Refresh();
+                CanButtonClick = true;
+            }
         }
         #endregion
 

@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <!--основная таблица-->
         <DataGrid x:Name="dg" ItemsSource="{Binding DataTable, Mode=TwoWay}" SelectionMode="Single"
-                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}" CanUserAddRows="False">
+                  SelectedItem="{Binding Path=SelectedEmployee, Mode=TwoWay}" CanUserAddRows="False">
         </DataGrid>
         <!--кнопочки основной таблицы-->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">

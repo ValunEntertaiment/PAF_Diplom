@@ -182,7 +182,24 @@ namespace PAF.ViewModel
             if (SelectedEmployee != null)
             {
                 CanButtonClick = false;
-                Upload();
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                    {
+                        connection.Open();
+                        string q =
+                                    "Delete from Employees " +
+                                    $"where Id= {SelectedEmployee.Row.ItemArray[0]}";
+                        SqlCommand command = new SqlCommand(q, connection);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message, "EmployeeAdd");
+                }
+                Refresh();
                 CanButtonClick = true;
             }
         }
