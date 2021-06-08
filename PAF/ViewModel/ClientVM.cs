@@ -71,6 +71,7 @@ namespace PAF.ViewModel
                 MessageBox.Show(x.Message, "Client");
             }
         }
+
         private void SubRefresh(object id)
         {
               string subQuery = "select " +
@@ -101,6 +102,35 @@ namespace PAF.ViewModel
             }
         }
 
+        private void Upload()
+        {
+            try
+            {
+                string query = "SELECT " +
+                               "Id код, " +
+                               "LastName Фамилия, " +
+                               "FirstName Имя, " +
+                               "MiddleName Отчество, " +
+                               "CASE Gender " +
+                                   "when 'Жен' then 1 " +
+                                   "when 'Муж' then 0 " +
+                               "END Пол, " +
+                               "Phone Телефон  from Clients";
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand = new SqlCommand(query, connection);
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    adapter.UpdateCommand = builder.GetUpdateCommand();
+                    adapter.Update(DataTable);
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
+
         #region Commands
 
         #region SaveChangesCommand
@@ -110,7 +140,7 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            //new SQLClient().UpdateClient(_Client);
+            Upload();
             CanButtonClick = true;
         }
         #endregion
@@ -135,25 +165,18 @@ namespace PAF.ViewModel
         {
             CanButtonClick = false;
             Refresh();
-           // Clients = new SQLClient().SelectClientToObservableCollection();
             CanButtonClick = true;
         }
         #endregion
 
         #region DeleteCommand
         public ICommand DeleteCommand { get; set; }
-        
-
         private bool CanDeleteExecute(object p) => CanButtonClick;
         private void OnDeleteExecuted(object p)
         {
-            if(SelectedClient != null)
-            {
-                CanButtonClick = false;
-                //new SQLClient().DeleteClient(SelectedClient);
-                CanButtonClick = true;
-                OnUpdateExecuted(null);
-            }
+            CanButtonClick = false;
+            Upload();
+            CanButtonClick = true;
         }
         #endregion
 

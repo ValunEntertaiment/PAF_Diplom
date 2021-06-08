@@ -3,6 +3,8 @@ using PAF.Data.Entityies;
 using PAF.ViewModel;
 using PAF.ViewModel.BaseVM;
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 
@@ -47,11 +49,26 @@ namespace PAF.View.Windows
                 client.Gender = (Genders)ClientGender.SelectedValue;
 
             client.Phone = ClientPhone.Text;
+            int gender = client.Gender == Genders.Муж ? 0 : 1;
 
-
-            new SQLClient().InsertClient(client);
-            
-            this.Close();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    connection.Open();
+                    string q =
+                                "insert into Clients(LastName,FirstName,MiddleName,Gender,Phone) " +
+                                $"values ('{client.LastName}','{ client.FirstName}','{ client.MiddleName}',{gender},'{ client.Phone}') ";
+                    SqlCommand command = new SqlCommand(q, connection);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                Close();
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Client");
+            }
         }
     }
 }
