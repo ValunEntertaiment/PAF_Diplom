@@ -74,6 +74,7 @@ namespace PAF.ViewModel
                 MessageBox.Show(x.Message);
             }
         }
+
         private void SubRefresh(object id)
         {
             string subQuery =
@@ -104,6 +105,39 @@ namespace PAF.ViewModel
             }
         }
 
+        private void Upload()
+        {
+            try
+            {
+                string query = "SELECT " +
+                           "Id код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 'Жен' then 1 " +
+                               "when 'Муж' then 0 " +
+                           "END Пол, " +
+                           "Salary Зарплата, " +
+                           "[Login] Логин, " +
+                           "[Password] Пароль, " +
+                           "Role Роль " +
+                       "FROM Employees";
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand = new SqlCommand(query, connection);
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    adapter.UpdateCommand = builder.GetUpdateCommand();
+                    adapter.Update(DataTable);
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
+
         #region Commands
 
         #region SaveChangesCommand
@@ -112,7 +146,7 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            //ew SQLEmployee().UpdateEmployee(_Employees);
+            Upload();
             CanButtonClick = true;
         }
         #endregion
@@ -123,10 +157,9 @@ namespace PAF.ViewModel
         private void OnAddExecuted(object p)
         {
             CanButtonClick = false;
-            EmployeeAdd clientAdd = new EmployeeAdd();
-            clientAdd.ShowDialog();
+            new EmployeeAdd().ShowDialog();
             CanButtonClick = true;
-            OnUpdateExecuted(null);
+            Refresh();
         }
         #endregion
 
@@ -137,7 +170,6 @@ namespace PAF.ViewModel
         {
             CanButtonClick = false;
             Refresh();
-            //Employees = new SQLEmployee().SelectEmployee();
             CanButtonClick = true;
         }
         #endregion
@@ -150,17 +182,13 @@ namespace PAF.ViewModel
             if (SelectedEmployee != null)
             {
                 CanButtonClick = false;
-                //new SQLEmployee().DeleteEmployee(SelectedEmployee);
+                Upload();
                 CanButtonClick = true;
-                OnUpdateExecuted(null);
             }
         }
         #endregion
 
         #endregion
-
-        //public List<Employees> Employees { get => _Employees; set => Set(ref _Employees, value); }
-        //List<Employees> _Employees = new SQLEmployee().SelectEmployee();
 
         public EmployeeVM(ref int Width, ref int Height)
         {

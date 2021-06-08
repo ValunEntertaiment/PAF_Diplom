@@ -2,6 +2,8 @@
 using PAF.Data.Entityies;
 using PAF.ViewModel;
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Windows;
 
 namespace PAF.View.Windows
@@ -42,13 +44,29 @@ namespace PAF.View.Windows
                 employee.Gender = Genders.Муж;
             else
                 employee.Gender = (Genders)Gender.SelectedValue;
+            int gender = employee.Gender == Genders.Муж ? 0 : 1;
 
             try
             {
                 employee.Salary = Convert.ToDecimal(Salary.Text);
-                new SQLEmployee().InsertEmployee(employee);
-
-                Close();
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                    {
+                        connection.Open();
+                        string q =
+                                    "insert into Clients(LastName,FirstName,MiddleName,Gender,Phone) " +
+                                    $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},'{ employee.Salary}') ";
+                        SqlCommand command = new SqlCommand(q, connection);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    Close();
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message, "Employee");
+                }
             }
             catch
             {
