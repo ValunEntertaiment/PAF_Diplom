@@ -69,7 +69,7 @@
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" Click="ButtonClientAdd" />
-            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}"/>
+            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

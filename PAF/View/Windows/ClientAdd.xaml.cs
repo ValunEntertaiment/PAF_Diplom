@@ -70,6 +70,11 @@ namespace PAF.View.Windows
                 MessageBox.Show(x.Message, "Client");
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
 
