@@ -7,6 +7,7 @@ using System;
 using PAF.ViewModel.BaseVM;
 using System.IO;
 using System.Windows.Forms;
+using System.Text;
 
 namespace PAF.ViewModel
 {
@@ -32,6 +33,7 @@ namespace PAF.ViewModel
                     "select "+
                     "c.Id Код, "+
                     "c.[Name] 'Наименование товара', "+
+                    "c.Price Цена, "+
                     "c.Amount Количество, "+
                     "s.[Name] Поставщик, "+
                     "t.[name] Тип "+
@@ -69,13 +71,13 @@ namespace PAF.ViewModel
             DateTime dateTime = DateTime.Now; //название формируется по текущей дате
 
             saveFileDialog.FileName = "Товары на " + dateTime.ToString("dd MM yyyy"); //название файла
-
+            Encoding.GetEncoding("UTF-8");
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string path = saveFileDialog.FileName;
                 DataRow[] dr = _DataTable.Select();
 
-                StreamWriter file = new StreamWriter(path);
+                StreamWriter file = new StreamWriter(path,false,Encoding.UTF8);
                 bool first = true;
                 foreach (var item in _DataTable.Columns)
                 {
@@ -84,12 +86,15 @@ namespace PAF.ViewModel
                         file.Write(item.ToString());
                         first = false;
                     }
-                    file.Write(";" + item.ToString());
+                    else
+                    {
+                        file.Write(";" + item.ToString());
+                    }
                 }
                 file.WriteLine();
                 foreach (var item in dr)
                 {
-                    file.WriteLine(item.ItemArray[0] + ";" + item.ItemArray[1] + ";" + item.ItemArray[2] + ";" + item.ItemArray[3] + ";" + item.ItemArray[4]);
+                    file.WriteLine(item.ItemArray[0] + ";" + item.ItemArray[1] + ";" + item.ItemArray[2] + ";" + item.ItemArray[3] + ";" + item.ItemArray[4] + ";" + item.ItemArray[5]);
                 }
                 file.Close();
             }
