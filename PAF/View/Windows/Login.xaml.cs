@@ -1,4 +1,5 @@
-﻿using PAF.Data.Clases;
+﻿using PAF.Data;
+using PAF.Data.Clases;
 using PAF.Data.Entityies;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,18 @@ namespace PAF.View.Windows
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(Password.Password == "0001" && TBLogin.Text == "")
+            try
+            {
+                new MyDbContext().Database.Initialize(false);
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Не удалось автоматически создать базу данных","Ошибка создания базы данных",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            
+
+            if (Password.Password == "0001" && TBLogin.Text == "")
             {
                 new MainWindow().Show();
                 Close();
@@ -54,8 +66,8 @@ namespace PAF.View.Windows
             }
             else
             {
-                string q = $"select Role from Employees where Login={TBLogin.Text} and Password ={Password.Password}";
-                string qq = $"select Id from Employees where Login={TBLogin.Text} and Password ={Password.Password}";
+                string q = $"select Role from Employees where Login='{TBLogin.Text}' and Password ='{Password.Password}'";
+                string qq = $"select Id from Employees where Login='{TBLogin.Text}' and Password ='{Password.Password}'";
                 object role = null;
                 object Id = null;
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
