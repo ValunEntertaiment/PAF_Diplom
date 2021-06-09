@@ -1,0 +1,92 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:PAF.ViewModel"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        x:Class="PAF.View.Windows.MainWindowSklad"
+        mc:Ignorable="d" Height="{Binding Path=Height, Mode=TwoWay}" Width="{Binding Path=Width, Mode=TwoWay}" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True">
+
+    <!--Главная область-->
+    <Grid Background="#FFF3F5F5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="50"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition  />
+            <RowDefinition  />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Верхняя панель-->
+        <StackPanel VerticalAlignment="Top" Grid.ColumnSpan="4" Background="#1240AB" Opacity="1" MouseDown="StackPanel_MouseDown">
+            <Grid Margin="5">
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button ToolTip="Сменить учетную запись" Style="{StaticResource ButtonsUpStyle}" Command="{Binding LogoutCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="LogoutVariant"/>
+                    </Button>
+                    <Button ToolTip="Настройки" Style="{StaticResource ButtonsUpStyle}" Command="{Binding ConnectionCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Settings"/>
+                    </Button>
+                    <Button ToolTip="Свернуть" Style="{StaticResource ButtonsUpStyle}" Command="{Binding MinimizeCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="WindowMinimize"/>
+                    </Button>
+                    <Button ToolTip="Полный экран" Style="{StaticResource ButtonsUpStyle}" Command="{Binding FullscreenCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" x:Name="FullscreenIcon" Kind="WindowMaximize"/>
+                    </Button>
+                    <Button ToolTip="Закрыть" Style="{StaticResource ButtonsUpStyle}" Command="{Binding CloseCommand}">
+                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Close"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <!--Центр-->
+        <StackPanel Grid.Column="2" Grid.Row="2" Grid.RowSpan="2">
+            <Grid >
+                <Frame Content="{Binding ContentPage}" NavigationUIVisibility="Hidden"/>
+            </Grid>
+        </StackPanel>
+        
+
+        <!--Левая панель-->
+        <Grid Background="#263238" Grid.RowSpan="5">
+            <StackPanel>
+                <Image Margin="10" Height="120" Source="/PAF;component/Resources/Logo.png"/>
+                <StackPanel>
+                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectDeliveries}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Truck"/>
+                            <TextBlock Text="Поставки" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectComponents}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Database"/>
+                            <TextBlock Text="Товары" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectTypes}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Menu"/>
+                            <TextBlock Text="Типы товаров" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectSupplies}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Worker"/>
+                            <TextBlock Text="Поставщики" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

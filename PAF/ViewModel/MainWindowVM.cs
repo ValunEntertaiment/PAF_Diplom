@@ -1,7 +1,7 @@
 ﻿using PAF.Commands.Base;
 using PAF.View.Pages;
+using PAF.View.Windows;
 using PAF.ViewModel.BaseVM;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -28,7 +28,8 @@ namespace PAF.ViewModel
         private bool CanLogoutExecute(object p) => true;
         private void OnLogoutExecuted(object p)
         {
-            MessageBox.Show("Hello");
+            new Login().Show();
+            CloseAction();
             // Сделать переход на форму авторизации
         }
         #endregion
