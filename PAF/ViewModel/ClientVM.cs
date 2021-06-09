@@ -33,8 +33,8 @@ namespace PAF.ViewModel
         public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
         DataTable _DataTable;
 
-        public DataTable Sales { get => SubTable; set => Set(ref SubTable, value); }
-        DataTable SubTable;
+        public DataTable SubTable { get => _SubTable; set => Set(ref _SubTable, value); }
+        DataTable _SubTable;
 
         public int Width { get => _Width; set => Set(ref _Width, value); }
         int _Width = 800;
@@ -92,7 +92,7 @@ namespace PAF.ViewModel
                     SqlDataAdapter adapter = new SqlDataAdapter(subQuery, connection);
                     DataTable temp = new DataTable();
                     adapter.Fill(temp);
-                    Sales = temp; //добавил temp чтобы срабатывал set у свойства
+                    SubTable = temp; //добавил temp чтобы срабатывал set у свойства
                 }
 
             }
