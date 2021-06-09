@@ -2,21 +2,12 @@
 using PAF.Data.Clases;
 using PAF.Data.Entityies;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PAF.View.Windows
 {
@@ -28,7 +19,6 @@ namespace PAF.View.Windows
         public Login()
         {
             InitializeComponent();
-            ObservableCollection<Clients> collection = new SQLClient().SelectClientToObservableCollection();
         }
 
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
@@ -42,8 +32,10 @@ namespace PAF.View.Windows
 
             }
         }
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string password = Password.Password;
+            string login = TBLogin.Text;
             try
             {
                 new MyDbContext().Database.Initialize(false);
@@ -51,23 +43,22 @@ namespace PAF.View.Windows
             catch (Exception)
             {
 
-                MessageBox.Show("Не удалось автоматически создать базу данных","Ошибка создания базы данных",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Не удалось автоматически создать базу данных", "Ошибка создания базы данных", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
 
-            if (Password.Password == "0001" && TBLogin.Text == "")
+            if (password == "0001" && login == "")
             {
                 new MainWindow().Show();
                 Close();
             }
-            else if(Password.Password == "" || TBLogin.Text == "")
+            else if (password == "" || login == "")
             {
                 MessageBox.Show("Введите логин и пароль");
             }
             else
             {
-                string q = $"select Role from Employees where Login='{TBLogin.Text}' and Password ='{Password.Password}'";
-                string qq = $"select Id from Employees where Login='{TBLogin.Text}' and Password ='{Password.Password}'";
+                string q = $"select Role from Employees where Login='{login}' and Password ='{password}'";
+                string qq = $"select Id from Employees where Login='{login}' and Password ='{password}'";
                 object role = null;
                 object Id = null;
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
@@ -103,7 +94,7 @@ namespace PAF.View.Windows
                         Close();
                         break;
                     default:
-                        MessageBox.Show("Роль данного пользователя не обрабатывается программой. Обратитесь к разработчику программы","Ошибка роли");
+                        MessageBox.Show("Роль данного пользователя не обрабатывается программой. Обратитесь к разработчику программы", "Ошибка роли");
                         break;
 
                 }
@@ -118,6 +109,11 @@ namespace PAF.View.Windows
         private void Password_LostFocus(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        void Connect(string password, string login)
+        {
+            
         }
     }
 }

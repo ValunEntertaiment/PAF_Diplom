@@ -39,7 +39,7 @@ namespace PAF.ViewModel
         {
             string query =
                     "select "+
-                    "id код, "+
+                    "id Код, "+
                     "[Name] Поставщик, "+
                     "[Address] Адрес "+
                     "from Supplies ";
@@ -55,7 +55,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                System.Windows.MessageBox.Show(x.Message);
+                System.Windows.MessageBox.Show(x.Message,"Ошибка таблицы Поставщики", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
             }
         }
 
@@ -97,16 +97,12 @@ namespace PAF.ViewModel
                                         $@"values (GetDate(),{ SelectedSupply.Row.ItemArray[0]}) " +
                                         "select scope_identity()";
                             SqlCommand command = new SqlCommand(q, connection);
-
-                            //SqlDataReader reader = command.ExecuteReader();
-                            //if (reader.HasRows)
                             DeliveryId = command.ExecuteScalar();
-                            //reader.Close();
                             connection.Close();
                         }
                         catch (Exception x)
                         {
-                            MessageBox.Show(x.Message);
+                            System.Windows.MessageBox.Show(x.Message,"Выбранный поставщик не найден в бд", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                         }
                     }
                     var Id = Convert.ToInt32(DeliveryId);
@@ -168,7 +164,7 @@ namespace PAF.ViewModel
                                 }
                                 catch (Exception x)
                                 {
-                                    MessageBox.Show(x.Message);
+                                    System.Windows.MessageBox.Show(x.Message,"", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                                 }
                             }
                         }

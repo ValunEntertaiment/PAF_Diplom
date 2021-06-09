@@ -7,7 +7,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        Width="300" Height="450" ResizeMode="NoResize" WindowStyle="None">
+        Width="300" Height="550" ResizeMode="NoResize" WindowStyle="None">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style x:Key="TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignTextBlock}">
@@ -62,6 +62,18 @@
             <Grid>
                 <TextBlock Text="Зарплата" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Salary, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="Salary" Style="{StaticResource TextBoxStyle}"/>
+            </Grid>
+            <Grid>
+                <TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Login, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="Login" Style="{StaticResource TextBoxStyle}"/>
+            </Grid>
+            <Grid>
+                <TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="Password" Style="{StaticResource TextBoxStyle}"/>
+            </Grid>
+            <Grid>
+                <TextBlock Text="Роль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Role, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <ComboBox x:Name="Role"/>
             </Grid>
         </StackPanel>
 

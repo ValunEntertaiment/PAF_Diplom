@@ -23,9 +23,9 @@ namespace PAF.ViewModel
         private void Refresh()
         {
             string query = "SELECT " +
-                               "Id код, " +
+                               "Id Код, " +
                                "[Name] Тип, " +
-                               "ShortName 'Короткое название' " +
+                               "ShortName 'Сокращенное название' " +
                            "FROM Types";
             try
             {

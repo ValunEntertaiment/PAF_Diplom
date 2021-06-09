@@ -30,9 +30,6 @@
                     <Button ToolTip="Сменить учетную запись" Style="{StaticResource ButtonsUpStyle}" Command="{Binding LogoutCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="LogoutVariant"/>
                     </Button>
-                    <Button ToolTip="Настройки" Style="{StaticResource ButtonsUpStyle}" Command="{Binding ConnectionCommand}">
-                        <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Settings"/>
-                    </Button>
                     <Button ToolTip="Свернуть" Style="{StaticResource ButtonsUpStyle}" Command="{Binding MinimizeCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="WindowMinimize"/>
                     </Button>

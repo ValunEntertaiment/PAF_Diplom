@@ -46,7 +46,7 @@ namespace PAF.ViewModel
         private void Refresh()
         {
             string query = "SELECT " +
-                           "Id код, " +
+                           "Id Код, " +
                            "LastName Фамилия, " +
                            "FirstName Имя, " +
                            "MiddleName Отчество, " +
@@ -68,7 +68,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message, "Client");
+                MessageBox.Show(x.Message, "Ошибка в таблице Клиенты",MessageBoxButton.OK,MessageBoxImage.Warning);
             }
         }
 
@@ -98,7 +98,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message,"Client");
+                MessageBox.Show(x.Message,"Ошибка в таблице Продажи", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -106,16 +106,29 @@ namespace PAF.ViewModel
         {
             try
             {
+                //string query = "SELECT " +
+                //               "Id Код, " +
+                //               "LastName Фамилия, " +
+                //               "FirstName Имя, " +
+                //               "MiddleName Отчество, " +
+                //               "CASE Gender " +
+                //                   "when 'Жен' then 1 " +
+                //                   "when 'Муж' then 0 " +
+                //               "END Пол, " +
+                //               "Phone Телефон  from Clients";
+
                 string query = "SELECT " +
-                               "Id код, " +
-                               "LastName Фамилия, " +
-                               "FirstName Имя, " +
-                               "MiddleName Отчество, " +
-                               "CASE Gender " +
-                                   "when 'Жен' then 1 " +
-                                   "when 'Муж' then 0 " +
-                               "END Пол, " +
-                               "Phone Телефон  from Clients";
+                           "Id Код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 1 then 'Жен' " +
+                               "when 0 then 'Муж' " +
+                           "END Пол, " +
+                           "Phone Телефон " +
+                       "FROM Clients";
+
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
                     SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
@@ -127,7 +140,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                MessageBox.Show(x.Message);
+                MessageBox.Show(x.Message,"Ошибка обновления данных", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -192,7 +205,7 @@ namespace PAF.ViewModel
                 }
                 catch (Exception x)
                 {
-                    MessageBox.Show(x.Message, "EmployeeAdd");
+                    MessageBox.Show(x.Message, "Ошибка выбранного клиента", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 Refresh();
                 CanButtonClick = true;

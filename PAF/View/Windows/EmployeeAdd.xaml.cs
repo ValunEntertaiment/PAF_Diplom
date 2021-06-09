@@ -20,6 +20,8 @@ namespace PAF.View.Windows
             this.DataContext = new EmployeeVM();
             Gender.ItemsSource = Enum.GetValues(typeof(Genders));
             Gender.SelectedValue = Genders.Муж;
+            Role.ItemsSource = Enum.GetValues(typeof(Roles));
+            Gender.SelectedValue = Roles.Консультант;
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -45,6 +47,21 @@ namespace PAF.View.Windows
             else
                 employee.Gender = (Genders)Gender.SelectedValue;
             int gender = employee.Gender == Genders.Муж ? 0 : 1;
+
+            employee.Login = Login.Text;
+            employee.Password = Password.Text;
+            switch ((Roles)Role.SelectedValue)
+            {
+                case Roles.Консультант:
+                    employee.Role = "Консультант";
+                    break;
+                case Roles.Кладовщик:
+                    employee.Role = "Кладовщик";
+                    break;
+                case Roles.Администратор:
+                    employee.Role = "Администратор";
+                    break;
+            }
 
             try
             {

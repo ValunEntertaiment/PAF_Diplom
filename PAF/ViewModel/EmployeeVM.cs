@@ -46,7 +46,7 @@ namespace PAF.ViewModel
         private void Refresh()
         {
             string query = "SELECT " +
-                           "Id код, " +
+                           "Id Код, " +
                            "LastName Фамилия, " +
                            "FirstName Имя, " +
                            "MiddleName Отчество, " +
@@ -79,7 +79,7 @@ namespace PAF.ViewModel
         {
             string subQuery =
                         "select " +
-                            "SalesCompositions.Id код, " +
+                            "SalesCompositions.Id Код, " +
                             "SalesCompositions.Price Цена, " +
                             "SalesCompositions.Amount Количество, " +
                             "SalesCompositions.Sum Сумма, " +
@@ -110,7 +110,7 @@ namespace PAF.ViewModel
             try
             {
                 string query = "SELECT " +
-                           "Id код, " +
+                           "Id Код, " +
                            "LastName Фамилия, " +
                            "FirstName Имя, " +
                            "MiddleName Отчество, " +

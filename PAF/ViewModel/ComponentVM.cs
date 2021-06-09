@@ -52,7 +52,7 @@ namespace PAF.ViewModel
             }
             catch (Exception x)
             {
-                System.Windows.MessageBox.Show(x.Message);
+                System.Windows.MessageBox.Show(x.Message,"Ошибка таблицы Товары", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
             }
         }
 
