@@ -76,6 +76,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9e7cd3b544a090dc, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.2.0.0\lib\net40\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -93,6 +96,7 @@
     <Compile Include="Data\Classes\SaleComposition.cs" />
     <Compile Include="Data\Classes\Supply.cs" />
     <Compile Include="Data\Classes\Type.cs" />
+    <Compile Include="Data\Entityies\Roles.cs" />
     <Compile Include="Data\MSSQL\SQLClient.cs" />
     <Compile Include="Data\MSSQL\SQLComponent.cs" />
     <Compile Include="Data\MSSQL\SQLDelivery.cs" />
@@ -300,6 +304,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\33.ico" />
+    <Resource Include="Resources\Logo копия.png" />
+    <Resource Include="Resources\Loading.gif" />
     <Content Include="Поставка.sql" />
   </ItemGroup>
   <ItemGroup>

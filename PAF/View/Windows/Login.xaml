@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PAF.View.Windows" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
         WindowStyle="None" Height="400" Width="300" ResizeMode="NoResize">
@@ -11,19 +12,19 @@
         <Style x:Key="TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignTextBlock}">
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="FontSize" Value="14"/>
-            <!--<Setter Property="Margin" Value=""/>-->
+            <Setter Property="Margin" Value="10"/>
         </Style>
         <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource  MaterialDesignTextBox}">
-            <Setter Property="Margin" Value="0 5"/>
+            <Setter Property="Margin" Value="0 10"/>
             <Setter Property="FontSize" Value="14"/>
         </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="120"/>
-            <RowDefinition/>
+            <RowDefinition Height="138"/>
+            <RowDefinition />
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         
         <StackPanel VerticalAlignment="Top" Grid.ColumnSpan="4" Background="#1240AB" Opacity="1" MouseDown="StackPanel_MouseDown">
@@ -43,16 +44,22 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Width="170">
+        <Image Grid.Row="1" Margin="0 30 0 0" Height="110" Source="/PAF;component/Resources/Logo копия.png"/>
+
+        <StackPanel Grid.Row="2" Width="170" Margin="0 25">
             <Grid>
                 <TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBLogin, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="TBLogin" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <!--<TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
-                <PasswordBox x:Name="Password" Margin="0 5" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
+                <TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <PasswordBox x:Name="Password" Margin="0 10" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
             </Grid>
-            <Button Content="Войти" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
-        </StackPanel>        
+            <Button Content="Войти" Margin="0 20" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
+        </StackPanel>
+        <Grid Grid.RowSpan="4" Name="loadAnimation" Background="White" Opacity="0.7" Visibility="Hidden">
+            <Image  HorizontalAlignment="Center" VerticalAlignment="Center"
+               gif:ImageBehavior.AutoStart="True" gif:ImageBehavior.AnimatedSource="/Resources/Loading.gif" />
+        </Grid>
     </Grid>
 </Window>

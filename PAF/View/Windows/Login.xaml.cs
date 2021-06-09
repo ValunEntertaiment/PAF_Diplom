@@ -42,7 +42,7 @@ namespace PAF.View.Windows
 
             }
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
