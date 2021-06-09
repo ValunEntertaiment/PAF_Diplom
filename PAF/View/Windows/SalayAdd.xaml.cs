@@ -25,7 +25,5 @@ namespace PAF.View.Windows
 
             }
         }
-
-
     }
 }

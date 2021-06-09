@@ -1,10 +1,14 @@
 ﻿using PAF.Commands.Base;
 using PAF.ViewModel.BaseVM;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -169,6 +173,15 @@ namespace PAF.ViewModel
                     first = true;
                 }
             }
+
+
+
+
+
+
+
+
+
             CanButtonClick = true;
         }
         #endregion
