@@ -2,6 +2,9 @@
 using PAF.View.Pages;
 using PAF.View.Windows;
 using PAF.ViewModel.BaseVM;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -11,8 +14,31 @@ namespace PAF.ViewModel
     {
         #region Properties
 
-        public IPage Page { get => _Page; set => Set(ref _Page, value); }
+        public string Search 
+        { 
+            get => _Search; 
+            set 
+            {
+                Set(ref _Search, value);
+                List<string> vs = new List<string>();
+                foreach (var item in Page.DataTable.Select())
+                {
+                    string row ="";
+                    foreach (var item1 in item.ItemArray)
+                    {
+                        row += (item1 + " ");
+                    }
+                    vs.Add(row);
+                }
 
+                var q = from row in vs
+                        .Where(p => p.Contains(Search))
+                        select row;
+            }
+        }
+        string _Search;
+
+        public IPage Page { get => _Page; set => Set(ref _Page, value); }
         static IPage _Page = new ComponentVM();
 
         /// <summary> основная таблица </summary>

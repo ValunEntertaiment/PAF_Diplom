@@ -6,7 +6,9 @@
         xmlns:vm="clr-namespace:PAF.ViewModel"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="PAF.View.Windows.MainWindow"
         mc:Ignorable="d" Height="{Binding Path=Height, Mode=TwoWay}" Width="{Binding Path=Width, Mode=TwoWay}" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True">
-
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />        
+    </Window.Resources>
     <!--Главная область-->
     <Grid Background="#FFF3F5F5">
         <Grid.ColumnDefinitions>
@@ -17,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="50"/>
             <RowDefinition  />
             <RowDefinition  />
             <RowDefinition Height="50"/>
@@ -42,7 +44,11 @@
                 </StackPanel>
             </Grid>
         </StackPanel>
-
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2">
+            <TextBlock Text="Поиск" Width="150" Foreground="Gray" Visibility="{Binding ElementName=Search, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBox x:Name="Search" Width="150" Text="{Binding Search, Mode=TwoWay}"/>
+        </Grid>
+        
         <!--Центр-->
         <StackPanel Grid.Column="2" Grid.Row="2" Grid.RowSpan="2">
             <Grid >
@@ -50,7 +56,6 @@
             </Grid>
         </StackPanel>
         
-
         <!--Левая панель-->
         <Grid Background="#263238" Grid.RowSpan="5">
             <StackPanel>

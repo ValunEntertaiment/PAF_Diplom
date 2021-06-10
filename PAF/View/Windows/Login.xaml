@@ -51,12 +51,12 @@
 
         <StackPanel Grid.Row="2" Width="170" Margin="0 25">
             <Grid>
-                <TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBLogin, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="TBLogin" Style="{StaticResource TextBoxStyle}"/>
+                <!--<TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBLogin, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                <TextBox x:Name="TBLogin"  materialDesign:HintAssist.Hint="Логин" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <PasswordBox x:Name="Password" Margin="0 10" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
+                <!--<TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Пароль" Margin="0 10" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
             </Grid>
             <Button Content="Войти" Margin="0 20" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
         </StackPanel>
