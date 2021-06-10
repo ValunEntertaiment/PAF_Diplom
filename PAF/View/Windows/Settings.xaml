@@ -1,12 +1,14 @@
-﻿<Window x:Class="PAF.View.Windows.Login"
+﻿<Window x:Class="PAF.View.Windows.Settings"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
-        xmlns:local="clr-namespace:PAF.View.Windows" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:local="clr-namespace:PAF.View.Windows" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+        xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        WindowStyle="None" Height="400" Width="300" ResizeMode="NoResize">
+        Height="200" Width="400" WindowStyle="None">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style x:Key="TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignTextBlock}">
@@ -22,16 +24,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition Height="138"/>
-            <RowDefinition />
             <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        
         <StackPanel VerticalAlignment="Top" Grid.ColumnSpan="4" Background="#1240AB" Opacity="1" MouseDown="StackPanel_MouseDown">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Height="25" Style="{StaticResource ButtonsUpStyle}" Click="Button_Click_1">
-                    <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Connection"/>
-                </Button>
                 <Button Height="25" Style="{StaticResource ButtonsUpStyle}" >
                     <!--Command="{Binding CloseCommand}"-->
                     <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Close"/>
@@ -46,23 +44,15 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-
-        <Image Grid.Row="1" Margin="0 30 0 0" Height="110" Source="/PAF;component/Resources/Logo копия.png"/>
-
-        <StackPanel Grid.Row="2" Width="170" Margin="0 25">
-            <Grid>
-                <TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBLogin, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="TBLogin" Style="{StaticResource TextBoxStyle}"/>
+        <StackPanel Grid.Row="2">
+            <Grid Width="250">
+                <TextBlock Text="Строка подключения" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=ConnectionString, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="ConnectionString" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
-            <Grid>
-                <TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <PasswordBox x:Name="Password" Margin="0 10" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
-            </Grid>
-            <Button Content="Войти" Margin="0 20" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
         </StackPanel>
-        <Grid Grid.RowSpan="4" Name="loadAnimation" Background="White" Opacity="0.7" Visibility="Hidden">
-            <Image  HorizontalAlignment="Center" VerticalAlignment="Center"
-               gif:ImageBehavior.AutoStart="True" gif:ImageBehavior.AnimatedSource="/Resources/Loading.gif" />
-        </Grid>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Сохранить" Style="{StaticResource ViewButtonStule}" Click="Button_Click_1" Margin="0 0 75 0"/>
+            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
