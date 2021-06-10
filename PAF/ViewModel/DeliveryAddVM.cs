@@ -51,6 +51,7 @@ namespace PAF.ViewModel
                     DataTable temp = new DataTable();
                     adapter.Fill(temp);
                     DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
                 }
             }
             catch (Exception x)
