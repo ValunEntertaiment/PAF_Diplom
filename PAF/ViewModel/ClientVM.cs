@@ -36,11 +36,11 @@ namespace PAF.ViewModel
         public DataTable SubTable { get => _SubTable; set => Set(ref _SubTable, value); }
         DataTable _SubTable;
 
-        public int Width { get => _Width; set => Set(ref _Width, value); }
-        int _Width = 800;
+        //public int Width { get => _Width; set => Set(ref _Width, value); }
+        //int _Width = 800;
         
-        public int Height { get => _Height; set => Set(ref _Height, value); }
-        int _Height = 475;
+        //public int Height { get => _Height; set => Set(ref _Height, value); }
+        //int _Height = 475;
         #endregion
 
         private void Refresh()
@@ -226,8 +226,8 @@ namespace PAF.ViewModel
 
             Refresh();
             
-            this.Width = Width >=1150?Width - 350:800;          //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
-            this.Height = Height >= 600 ? Height - 80 : 520;   //600 минимальная высота окна. 125-Сумма высоты всех статичных элементов. 475-Минимальная высота страницы
+            //this.Width = Width >=1150?Width - 350:800;          //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
+            //this.Height = Height >= 600 ? Height - 80 : 520;   //600 минимальная высота окна. 125-Сумма высоты всех статичных элементов. 475-Минимальная высота страницы
         }
 
         public ClientVM()

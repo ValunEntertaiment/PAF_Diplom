@@ -6,7 +6,6 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-//using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -126,7 +125,7 @@ namespace PAF.ViewModel
                 {
                     row = item.Split(';');
                     number = Convert.ToInt32(row[0]);
-                    if (number == -1 || number != tempNumber)
+                    if (number != tempNumber) //если не равно значит началась новая продажа
                     {
                         tempNumber = number;
                         using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
