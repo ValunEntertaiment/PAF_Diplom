@@ -1,6 +1,7 @@
 ﻿using PAF.Commands.Base;
 using PAF.ViewModel.BaseVM;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -111,98 +112,75 @@ namespace PAF.ViewModel
             {
                 string filename = openFileDialog.FileName;
 
-                string[] file = File.ReadAllLines(filename);
+                List<string> file = new List<string>(File.ReadAllLines(filename));
+                file.Remove(file[0]);
                 string[] row;
                 string query;
-                bool first = false;
-                object DeliveryId = null;
+                int number = -1;
+                int tempNumber = number;
+                object SalesId = null;
+                int Id = 1;
 
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
-                {
-                    try
-                    {
-                        connection.Open();
-                        string q =
-                                    "insert into Deliveries(Date, Supply_Id) " +
-                                    $@"values (GetDate(),{ SelectedItem.Row.ItemArray[0]}) " +
-                                    "select scope_identity()";
-                        SqlCommand command = new SqlCommand(q, connection);
 
-                        //SqlDataReader reader = command.ExecuteReader();
-                        //if (reader.HasRows)
-                        DeliveryId = command.ExecuteScalar();
-                        //reader.Close();
-                        connection.Close();
-                    }
-                    catch (Exception x)
-                    {
-                        MessageBox.Show(x.Message);
-                    }
-                }
-                var Id = Convert.ToInt32(DeliveryId);
                 foreach (var item in file)
                 {
-                    if (first)
+                    row = item.Split(';');
+                    number = Convert.ToInt32(row[0]);
+                    if (number == -1 || number != tempNumber)
                     {
-                        row = item.Split(';');
-
-                        #region query
-                        query =
-                            "declare @IdComponent int, " +
-                                    "@IdDeliveries int, " +
-                                    "@IdType int, " +
-                                    "@Component Varchar(255), " +
-                                    "@Amount int " +
-
-                            "select @Amount = Amount, @IdComponent = Id " +
-                            "From Components " +
-                            $@"where[Name] = '{row[0]}' " +
-
-                            //проверяется поставлялся ли этот товар раньше
-                            "if (isnull(@Amount, -1) = -1) " +
-                                "begin " +//Добавяет полное описание и количество
-                                    $@"select @IdType = Id from Types where [Name] = '{row[1]}' " +
-
-
-                                    "if (isnull(@IdType, 0) = 0) " + //если типа нет то он создает его без указания короткого названия
-                                       "begin " +
-                                            "insert into Types([Name]) " +
-                                            $@"values (convert(nvarchar(MAX),'{row[1]}'))  " +
-                                            "set @IdType = scope_identity() " +
-                                        "end " +
-                                    "insert into Components([Name],/*Price,*/ Amount, Supply_Id, [Type_Id]) " +
-
-                                    $@"values(N'{row[0]}',/*{row[2]},*/ {row[3]}, {SelectedItem.Row.ItemArray[0]}, @IdType) " +
-
-                                    "set @IdComponent = scope_identity() " +
-
-
-
-                                "end " +
-                            "else " + //Данные о товаре уже есть меняется только количество
-                                $@"update Components set Amount = @Amount +{row[3]} " +
-                                $@"where[Name] = '{row[0]}' " +
-                                "insert into DeliveriesCompositions(Price, Amount, Sum, Component_Id, Delivery_Id) " +
-
-                                    $@"values({row[2]},{row[3]},{row[4]},@IdComponent,{Id}) ";
-                        #endregion
-
+                        tempNumber = number;
                         using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                         {
                             try
                             {
-                                SqlCommand command = new SqlCommand(query, connection);
                                 connection.Open();
-                                command.ExecuteNonQuery();
+                                string q =
+                                        "insert into Sales(Date, Employee_Id, Client_Id) " +
+
+                                                $"values(Getdate(),{row[4]},{row[5]}) " +
+                                        "select scope_identity() ";
+                                SqlCommand command = new SqlCommand(q, connection);
+
+                                SalesId = command.ExecuteScalar();
+                                Id = Convert.ToInt32(SalesId);
+
                                 connection.Close();
                             }
                             catch (Exception x)
                             {
-                                MessageBox.Show(x.Message);
+                                MessageBox.Show(x.Message, "Импорт продаж - Создание продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
-                    first = true;
+
+
+                    #region query
+                    query =
+                        $"if ({row[2]} <= (select Amount from Components where id = {row[3]})) " +
+                        "begin " +
+                            "insert into SalesCompositions(Price, Amount, Sum, Component_Id, Sale_Id) " +
+                            $"values({row[1]}, {row[2]}, {row[1]} * {row[2]}, {row[3]}, {Id}) " +
+
+                            "update Components " +
+                            $"set Amount = Amount - {row[2]} " +
+                            $"where Id = {row[3]} " +
+                        "end ";
+                    #endregion
+
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                    {
+                        try
+                        {
+                            SqlCommand command = new SqlCommand(query, connection);
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                        catch (Exception x)
+                        {
+                            MessageBox.Show(x.Message, "Импорт продаж - Создание состава продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
                 }
             }
             CanButtonClick = true;
