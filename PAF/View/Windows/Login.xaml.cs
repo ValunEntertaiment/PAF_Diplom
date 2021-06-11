@@ -43,12 +43,12 @@ namespace PAF.View.Windows
             catch (Exception)
             {
 
-                MessageBox.Show("Не удалось автоматически создать базу данных", "Ошибка создания базы данных", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("База данных не обнаружена. Автоматически создать базу данных не удалось", "Ошибка создания базы данных", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             if (password == "0001" && login == "")
             {
-                new MainWindow().Show();
+                new MainWindow("Супер Админ").Show();
                 Close();
             }
             else if (password == "" || login == "")
@@ -59,8 +59,10 @@ namespace PAF.View.Windows
             {
                 string q = $"select Role from Employees where Login='{login}' and Password ='{password}'";
                 string qq = $"select Id from Employees where Login='{login}' and Password ='{password}'";
+                string qqq = $"select LastName +' '+ FirstName +' '+ MiddleName +'(' + Login +')' from Employees where Login='{login}' and Password ='{password}'";
                 object role = null;
                 object Id = null;
+                object FIO = null;
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
                     try
@@ -71,6 +73,9 @@ namespace PAF.View.Windows
 
                         command = new SqlCommand(qq, connection);
                         Id = command.ExecuteScalar();
+
+                        command = new SqlCommand(qqq, connection);
+                        FIO = command.ExecuteScalar();
                         connection.Close();
                     }
                     catch (Exception x)
@@ -82,15 +87,15 @@ namespace PAF.View.Windows
                 switch ((string)role)
                 {
                     case "Админ":
-                        new MainWindow().Show();
+                        new MainWindow((string)FIO).Show();
                         Close();
                         break;
                     case "Склад":
-                        new MainWindowSklad().Show();
+                        new MainWindowSklad((string)FIO).Show();
                         Close();
                         break;
                     case "Продажа":
-                        new MainWindowEmployee().Show();
+                        new MainWindowEmployee((string)FIO).Show();
                         Close();
                         break;
                     default:
@@ -99,21 +104,6 @@ namespace PAF.View.Windows
 
                 }
             }
-        }
-
-        private void Password_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Password_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        void Connect(string password, string login)
-        {
-            
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

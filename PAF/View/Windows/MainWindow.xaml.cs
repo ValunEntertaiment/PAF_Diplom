@@ -11,9 +11,10 @@ namespace PAF.View.Windows
     public partial class MainWindow : Window
     {
         MainWindowVM VM;
-        public MainWindow()
+        public MainWindow(string FIO)
         {
             InitializeComponent();
+            this.FIO.Text = FIO;
             MainWindowVM VM = new MainWindowVM();
             this.DataContext = VM;
             this.VM = VM;

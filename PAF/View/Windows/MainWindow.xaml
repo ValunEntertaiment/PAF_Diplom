@@ -29,6 +29,7 @@
         <StackPanel VerticalAlignment="Top" Grid.ColumnSpan="4" Background="#1240AB" Opacity="1" MouseDown="StackPanel_MouseDown">
             <Grid Margin="5">
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock x:Name="FIO" Foreground="White" FontSize="20"/>
                     <Button ToolTip="Сменить учетную запись" Style="{StaticResource ButtonsUpStyle}" Command="{Binding LogoutCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="LogoutVariant"/>
                     </Button>
@@ -45,7 +46,7 @@
             </Grid>
         </StackPanel>
         <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2">
-            <TextBlock Text="Поиск" Width="150" Foreground="Gray" Visibility="{Binding ElementName=Search, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Margin="0 4 0 0" Text="Поиск" Width="150" Foreground="Gray" Visibility="{Binding ElementName=Search, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBox x:Name="Search" Width="150" Text="{Binding Search, Mode=TwoWay}" TextChanged="Search_TextChanged"/>
         </Grid>
         

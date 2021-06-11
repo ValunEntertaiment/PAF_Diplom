@@ -56,7 +56,7 @@
             </Grid>
             <Grid>
                 <!--<TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
-                <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Пароль" Margin="0 10" FontSize="14" GotFocus="Password_GotFocus" LostFocus="Password_LostFocus"/>
+                <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Пароль" Margin="0 10" FontSize="14"/>
             </Grid>
             <Button Content="Войти" Margin="0 20" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
         </StackPanel>
