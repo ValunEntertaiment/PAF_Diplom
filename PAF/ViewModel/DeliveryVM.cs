@@ -42,7 +42,7 @@ namespace PAF.ViewModel
         Deliveries _AddDelivery = new Deliveries();
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query = "select d.Id Код," +
                                 "s.Name Поставщик, " +
@@ -52,6 +52,37 @@ namespace PAF.ViewModel
                         "left join DeliveriesCompositions dc on dc.Delivery_Id = d.Id " +
                         "left join Supplies s on s.Id = Supply_Id " +
                         "group by d.Id, s.Name, d.date";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Delivery");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = "select d.Id Код," +
+                                "s.Name Поставщик, " +
+                                "d.date 'Дата поставки', " +
+                                "sum(dc.Sum) 'Сумма поставки' " +
+                            "from Deliveries d " +
+                                "left join DeliveriesCompositions dc on dc.Delivery_Id = d.Id " +
+                                "left join Supplies s on s.Id = Supply_Id " +
+                            "group by d.Id, s.Name, d.date " +
+                            $"having convert(varchar,d.Id) + ' ' + convert(varchar,s.Name) + ' ' + convert(varchar,d.date) + ' ' + convert(varchar,sum(dc.Sum)) like '%{search}%'";
+
+
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

@@ -27,7 +27,7 @@ namespace PAF.ViewModel
         int _Height = 475;
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query =
                     "select "+
@@ -53,6 +53,36 @@ namespace PAF.ViewModel
             catch (Exception x)
             {
                 System.Windows.MessageBox.Show(x.Message,"Ошибка таблицы Товары", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query =
+                    "select " +
+                    "c.Id Код, " +
+                    "c.[Name] 'Наименование товара', " +
+                    "c.Price Цена, " +
+                    "c.Amount Количество, " +
+                    "s.[Name] Поставщик, " +
+                    "t.[name] Тип " +
+                    "from components c " +
+                    "inner join Supplies s on s.Id = c.Supply_Id " +
+                    "inner join Types t on t.Id = c.[Type_Id] " +
+                    $"where convert(varchar,c.Id) + ' ' + convert(varchar,c.[Name]) + ' ' + convert(varchar,c.Price) + ' ' + convert(varchar,c.Amount) + ' ' + convert(varchar,s.[Name]) + ' ' + convert(varchar,t.[Name]) Like '%{search}%'";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                }
+            }
+            catch (Exception x)
+            {
+                System.Windows.MessageBox.Show(x.Message, "Ошибка таблицы Товары", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
             }
         }
 

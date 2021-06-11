@@ -2,9 +2,6 @@
 using PAF.View.Pages;
 using PAF.View.Windows;
 using PAF.ViewModel.BaseVM;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -20,20 +17,7 @@ namespace PAF.ViewModel
             set 
             {
                 Set(ref _Search, value);
-                List<string> vs = new List<string>();
-                foreach (var item in Page.DataTable.Select())
-                {
-                    string row ="";
-                    foreach (var item1 in item.ItemArray)
-                    {
-                        row += (item1 + " ");
-                    }
-                    vs.Add(row);
-                }
-
-                var q = from row in vs
-                        .Where(p => p.Contains(Search))
-                        select row;
+                Page.Refresh(Search);
             }
         }
         string _Search;

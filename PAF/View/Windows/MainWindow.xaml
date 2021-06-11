@@ -46,7 +46,7 @@
         </StackPanel>
         <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2">
             <TextBlock Text="Поиск" Width="150" Foreground="Gray" Visibility="{Binding ElementName=Search, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <TextBox x:Name="Search" Width="150" Text="{Binding Search, Mode=TwoWay}"/>
+            <TextBox x:Name="Search" Width="150" Text="{Binding Search, Mode=TwoWay}" TextChanged="Search_TextChanged"/>
         </Grid>
         
         <!--Центр-->

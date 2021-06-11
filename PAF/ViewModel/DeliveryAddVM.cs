@@ -35,7 +35,7 @@ namespace PAF.ViewModel
         DataRowView _SelectedSupply;
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query =
                     "select "+
@@ -60,6 +60,31 @@ namespace PAF.ViewModel
             }
         }
 
+        public void Refresh(string search)
+        {
+            string query =
+                    "select " +
+                    "id Код, " +
+                    "[Name] Поставщик, " +
+                    "[Address] Адрес " +
+                    "from Supplies " +
+                    $"where convert(varchar,id)  +' '+ convert(varchar,[Name])  +' '+ convert(varchar,[Address]) Like '%{search}%'";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                System.Windows.MessageBox.Show(x.Message, "Ошибка таблицы Поставщики", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            }
+        }
         #region Commands
 
         #region AddCommand

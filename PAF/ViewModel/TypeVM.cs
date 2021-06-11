@@ -14,13 +14,16 @@ namespace PAF.ViewModel
 {
     class TypeVM : ViewModel, IPage
     {
+        #region Properties
         public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
         DataTable _DataTable;
 
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
+        #endregion
 
-        private void Refresh()
+
+        public void Refresh()
         {
             string query = "SELECT " +
                                "Id Код, " +
@@ -41,6 +44,31 @@ namespace PAF.ViewModel
             catch (Exception x)
             {
                 MessageBox.Show(x.Message, "Type");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = "SELECT " +
+                               "Id Код, " +
+                               "[Name] Тип, " +
+                               "ShortName 'Сокращенное название' " +
+                           "FROM Types " +
+                           $"where convert(varchar,Id) +' '+ convert(varchar,[Name]) +' '+ convert(varchar,ShortName) like '%{search}%' ";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Type",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
 

@@ -10,11 +10,13 @@ namespace PAF.View.Windows
     /// </summary>
     public partial class MainWindow : Window
     {
+        MainWindowVM VM;
         public MainWindow()
         {
             InitializeComponent();
             MainWindowVM VM = new MainWindowVM();
             this.DataContext = VM;
+            this.VM = VM;
             if (VM.CloseAction == null) VM.CloseAction = new Action(() => this.Close());
             if (VM.FullscreenAction == null) VM.FullscreenAction = new Action(() => WindowStateCheck());
             if (VM.MinimizeAction == null) VM.MinimizeAction = new Action(() => this.WindowState = WindowState.Minimized);
@@ -33,7 +35,7 @@ namespace PAF.View.Windows
             }
         }
 
-    private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -43,6 +45,14 @@ namespace PAF.View.Windows
             {
 
             }
+        }
+
+        private void Search_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (Search.Text != "")
+                VM.Page.Refresh(Search.Text);
+            else
+                VM.Page.Refresh();
         }
     }
 }

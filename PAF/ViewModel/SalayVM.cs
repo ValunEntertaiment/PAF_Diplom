@@ -38,7 +38,7 @@ namespace PAF.ViewModel
         bool CanButtonClick = true;
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query =
                         "select s.Id Код, " +
@@ -49,6 +49,35 @@ namespace PAF.ViewModel
                         "left join SalesCompositions sc on sc.Sale_Id = s.Id " +
                         "left join Employees e on e.Id = Employee_Id " +
                         "group by s.Id, e.FirstName, s.date; ";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Salay");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query =
+                        "select s.Id Код, " +
+                            "e.FirstName Сотрудник, " +
+                            "s.date 'Дата продажи', " +
+                            "sum(sc.Sum) 'Сумма продажи' " +
+                        "from Sales s " +
+                        "left join SalesCompositions sc on sc.Sale_Id = s.Id " +
+                        "left join Employees e on e.Id = Employee_Id " +
+                        "group by s.Id, e.FirstName, s.date " +
+                        $"having convert(varchar,s.Id) + ' ' + convert(varchar,e.FirstName) + ' ' + convert(varchar,s.date) + ' ' + convert(varchar,sum(sc.Sum)) like '%{search}%' ";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

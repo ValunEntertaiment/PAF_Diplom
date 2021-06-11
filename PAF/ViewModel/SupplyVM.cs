@@ -20,9 +20,29 @@ namespace PAF.ViewModel
         bool CanButtonClick = true;
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query = "select id Код, [Name] Поставщик, Address Адрес from supplies";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Supply");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = $"select id Код, [Name] Поставщик, Address Адрес from supplies where convert(varchar,id) +' '+ convert(varchar,[Name]) +' '+ convert(varchar,Address) like '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

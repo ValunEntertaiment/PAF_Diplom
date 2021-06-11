@@ -38,12 +38,12 @@ namespace PAF.ViewModel
 
         //public int Width { get => _Width; set => Set(ref _Width, value); }
         //int _Width = 800;
-        
+
         //public int Height { get => _Height; set => Set(ref _Height, value); }
         //int _Height = 475;
         #endregion
 
-        private void Refresh()
+        public void Refresh()
         {
             string query = "SELECT " +
                            "Id Код, " +
@@ -70,6 +70,37 @@ namespace PAF.ViewModel
             catch (Exception x)
             {
                 MessageBox.Show(x.Message, "Ошибка в таблице Клиенты",MessageBoxButton.OK,MessageBoxImage.Warning);
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = "SELECT " +
+                           "Id Код, " +
+                           "LastName Фамилия, " +
+                           "FirstName Имя, " +
+                           "MiddleName Отчество, " +
+                           "CASE Gender " +
+                               "when 1 then 'Жен' " +
+                               "when 0 then 'Муж' " +
+                           "END Пол, " +
+                           "Phone Телефон " +
+                       "FROM Clients " +
+                       $"where convert(varchar,id) +' '+ convert(varchar,LastName) +' '+ convert(varchar,FirstName) +' '+ convert(varchar,Middlename) +' '+ CASE Gender when 1 then 'Жен' when 0 then 'Муж' END +' '+ convert(varchar,Phone) LIKE '%{search}%'";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Ошибка в таблице Клиенты", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
