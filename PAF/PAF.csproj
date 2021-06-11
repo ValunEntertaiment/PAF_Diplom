@@ -313,7 +313,6 @@
     <Resource Include="Resources\33.ico" />
     <Resource Include="Resources\Logo копия.png" />
     <Resource Include="Resources\Loading.gif" />
-    <Content Include="Поставка.sql" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Logo.png" />
