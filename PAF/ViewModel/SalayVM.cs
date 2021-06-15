@@ -103,11 +103,12 @@ namespace PAF.ViewModel
                         "sc.Amount Количество, "+
                         "sc.Sum Сумма, "+
                         "c.[Name] Товар, "+
-                        "e.FirstName Поставщик "+
+                        "sp.[Name] Поставщик "+
                     "from SalesCompositions sc "+
                     "inner join Components c on c.Id = sc.Component_Id "+
                     "inner join Sales s on sc.Sale_Id = s.Id " +
-                    "inner join Employees e on e.Id = s.Employee_Id " +
+                    "inner join Supplies sp on sp.Id = c.Supply_Id " +
+                   // "inner join Employees e on e.Id = s.Employee_Id " +
                     $"where s.Id = {(int)id}";
             try
             {

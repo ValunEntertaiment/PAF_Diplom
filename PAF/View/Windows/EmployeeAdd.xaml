@@ -44,35 +44,35 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="15" Width="250">
             <Grid>
-                <TextBlock Text="Фамилия" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=LastName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="LastNameText" Text="Фамилия" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=LastName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="LastName" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Имя" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=FirstName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock x:Name="FirstNameText" Text="Имя" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=FirstName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox x:Name="FirstName" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Отчество" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=MiddleName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="MiddleNameText" Text="Отчество" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=MiddleName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="MiddleName" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Пол" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Gender, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="GenderText" Text="Пол" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Gender, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <ComboBox x:Name="Gender"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Зарплата" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Salary, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="SalaryText" Text="Зарплата" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Salary, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="Salary" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Login, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="LoginText" Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Login, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="Login" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="PasswordText" Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="Password" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Роль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Role, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="RoleText" Text="Роль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Role, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <ComboBox x:Name="Role"/>
             </Grid>
         </StackPanel>

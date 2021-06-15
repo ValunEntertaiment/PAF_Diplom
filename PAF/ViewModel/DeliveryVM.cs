@@ -104,10 +104,10 @@ namespace PAF.ViewModel
         {
             string subQuery =
                         "select dc.Id Код, "+
-                                "dc.Price Цена, "+
+                                "c.[Name] Товар, " +
+                                "dc.Price Цена, " +
                                 "dc.Amount Количество, "+
                                 "dc.Sum Сумма, "+
-                                "c.[Name] Товар, "+
 		                        "s.[Name] Поставщик "+
                         "from DeliveriesCompositions dc "+
                         "inner join Components c on c.Id = dc.Component_Id "+
