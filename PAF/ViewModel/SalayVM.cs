@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -142,7 +143,9 @@ namespace PAF.ViewModel
             {
                 string filename = openFileDialog.FileName;
 
+                List<string[]> errors = new List<string[]>();
                 List<string> file = new List<string>(File.ReadAllLines(filename));
+                string columns = file[0];
                 file.Remove(file[0]);
                 string[] row;
                 string query;
@@ -150,65 +153,122 @@ namespace PAF.ViewModel
                 int tempNumber = number;
                 object SalesId = null;
                 int Id = 1;
-
+                object qwe = null;
 
                 foreach (var item in file)
                 {
                     row = item.Split(';');
                     number = Convert.ToInt32(row[0]);
-                    if (number != tempNumber) //если не равно значит началась новая продажа
-                    {
-                        tempNumber = number;
-                        using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
-                        {
-                            try
-                            {
-                                connection.Open();
-                                string q =
-                                        "insert into Sales(Date, Employee_Id, Client_Id) " +
-
-                                                $"values(Getdate(),{row[4]},{row[5]}) " +
-                                        "select scope_identity() ";
-                                SqlCommand command = new SqlCommand(q, connection);
-
-                                SalesId = command.ExecuteScalar();
-                                Id = Convert.ToInt32(SalesId);
-
-                                connection.Close();
-                            }
-                            catch (Exception x)
-                            {
-                                MessageBox.Show(x.Message, "Импорт продаж - Создание продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                    }
-
-                    #region query
-                    query =
-                        $"if ({row[2]} <= (select Amount from Components where id = {row[3]})) " +
-                        "begin " +
-                            "insert into SalesCompositions(Price, Amount, Sum, Component_Id, Sale_Id) " +
-                            $"values({row[1]}, {row[2]}, {row[1]} * {row[2]}, {row[3]}, {Id}) " +
-
-                            "update Components " +
-                            $"set Amount = Amount - {row[2]} " +
-                            $"where Id = {row[3]} " +
-                        "end ";
-                    #endregion
-
+                                                        
                     using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                     {
                         try
                         {
-                            SqlCommand command = new SqlCommand(query, connection);
                             connection.Open();
-                            command.ExecuteNonQuery();
+                            string q =
+                                    $"if ({row[2]} <= (select Amount from Components where id = {row[3]})) " +
+                                        "select 0 " +
+                                    "else " +
+                                        "select 1";
+                            SqlCommand command = new SqlCommand(q, connection);
+
+                            qwe = command.ExecuteScalar();
+                            
                             connection.Close();
                         }
                         catch (Exception x)
                         {
-                            MessageBox.Show(x.Message, "Импорт продаж - Создание состава продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show(x.Message, "Импорт продаж - Создание продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+                    }
+
+
+                    if (Convert.ToInt32(qwe) == 0)
+                    {
+                        if (number != tempNumber) //если не равно значит началась новая продажа
+                        {
+                            tempNumber = number;
+                            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                            {
+                                try
+                                {
+                                    connection.Open();
+                                    string q =
+                                            "insert into Sales(Date, Employee_Id, Client_Id) " +
+
+                                                    $"values(Getdate(),{row[4]},{row[5]}) " +
+                                            "select scope_identity() ";
+                                    SqlCommand command = new SqlCommand(q, connection);
+
+                                    SalesId = command.ExecuteScalar();
+                                    Id = Convert.ToInt32(SalesId);
+
+                                    connection.Close();
+                                }
+                                catch (Exception x)
+                                {
+                                    MessageBox.Show(x.Message, "Импорт продаж - Создание продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            }
+                        }
+
+                        #region query
+                        query =
+
+                                "insert into SalesCompositions(Price, Amount, Sum, Component_Id, Sale_Id) " +
+                                $"values({row[1]}, {row[2]}, {row[1]} * {row[2]}, {row[3]}, {Id}) " +
+
+                                "update Components " +
+                                $"set Amount = Amount - {row[2]} " +
+                                $"where Id = {row[3]} ";
+                        #endregion
+
+                        using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                        {
+                            try
+                            {
+                                SqlCommand command = new SqlCommand(query, connection);
+                                connection.Open();
+                                command.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            catch (Exception x)
+                            {
+                                MessageBox.Show(x.Message, "Импорт продаж - Создание состава продажи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        errors.Add(row);
+                    }
+                    
+                }
+                if (errors.Count != 0)
+                {
+                    MessageBox.Show("Некоторых товаров недостаточно для оформления продаж выберите расположение файла со списокм неоформленных продаж", "Недостаточно для оформления продаж",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                    saveFileDialog.Filter = "Text files(*.csv) | *.csv"; //формат файла
+
+                    DateTime dateTime = DateTime.Now; //название формируется по текущей дате
+
+                    saveFileDialog.FileName = "Не достаточно товаров " + dateTime.ToString("dd MM yyyy"); //название файла
+                    Encoding.GetEncoding("UTF-8");
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string path = saveFileDialog.FileName;
+                        StreamWriter file1 = new StreamWriter(path, false, Encoding.UTF8);
+                        file1.WriteLine(columns);
+                        foreach (var item in errors)
+                        {
+                            foreach (var item1 in item)
+                            {
+                                file1.Write(item1 + ";");
+                            }
+                            file1.WriteLine();
+                        }
+                        file1.Close();
                     }
                 }
             }
