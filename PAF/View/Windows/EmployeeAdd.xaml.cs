@@ -23,6 +23,7 @@ namespace PAF.View.Windows
             Gender.SelectedValue = Genders.Муж;
             Role.ItemsSource = Enum.GetValues(typeof(Roles));
             Role.SelectedValue = Roles.Консультант;
+            employee.Role = Roles.Консультант;
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -110,20 +111,20 @@ namespace PAF.View.Windows
             }
 
 
-           
 
-            switch ((Roles)Role.SelectedValue)
-                {
-                    case Roles.Консультант:
-                        employee.Role = "Консультант";
-                        break;
-                    case Roles.Кладовщик:
-                        employee.Role = "Кладовщик";
-                        break;
-                    case Roles.Администратор:
-                        employee.Role = "Администратор";
-                        break;
-                }
+            employee.Role = (Roles)Role.SelectedValue;
+            //switch ((Roles)Role.SelectedValue)
+            //    {
+            //        case Roles.Консультант:
+            //            employee.Role = "Администратор";
+            //            break;
+            //        case Roles.Кладовщик:
+            //            employee.Role = "Кладовщик";
+            //            break;
+            //        case Roles.Администратор:
+            //            employee.Role = "Администратор";
+            //            break;
+            //    }
 
             decimal temp;
             if (decimal.TryParse(Salary.Text, out temp))
@@ -146,7 +147,7 @@ namespace PAF.View.Windows
                     connection.Open();
                     string q =
                                 "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary,Login,Password,Role) " +
-                                $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary},'{employee.Login}','{employee.Password}','{employee.Role}') ";
+                                $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary},'{employee.Login}','{employee.Password}',{employee.Role}) ";
                     SqlCommand command = new SqlCommand(q, connection);
                     command.ExecuteNonQuery();
                     connection.Close();

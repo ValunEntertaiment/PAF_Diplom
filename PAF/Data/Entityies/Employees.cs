@@ -21,7 +21,7 @@ namespace PAF.Data.Entityies
         /// <summary> Пароль с которым сотрудник будет входить в систему </summary>
         public string Password { get => _Password; set => Set(ref _Password, value); }
         
-        public string Role { get => _Role; set => Set(ref _Role, value); }
+        public Roles Role { get => _Role; set => Set(ref _Role, value); }
 
         /// <summary> Список продаж </summary>
         public List<Sales> Sales { get => _Sales; set => Set(ref _Sales, value); }
@@ -35,7 +35,7 @@ namespace PAF.Data.Entityies
         decimal _Salary;
         string _Login;
         string _Password;
-        string _Role;
+        Roles _Role;
         List<Sales> _Sales;
         #endregion
     }

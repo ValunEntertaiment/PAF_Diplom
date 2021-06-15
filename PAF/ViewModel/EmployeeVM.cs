@@ -57,7 +57,11 @@ namespace PAF.ViewModel
                                "Salary Зарплата, " +
                                "[Login] Логин, " +
                                "[Password] Пароль, " +
-                               "Role Роль " +
+                               "CASE Role " +
+                                   "when 1 then 'Кладовщик' " +
+                                   "when 0 then 'Администратор' " +
+                                   "when 2 then 'Консультант' "+
+                               "END Роль "+
                             "FROM Employees ";
             try
             {
@@ -90,7 +94,11 @@ namespace PAF.ViewModel
                                "Salary Зарплата, " +
                                "[Login] Логин, " +
                                "[Password] Пароль, " +
-                               "Role Роль " +
+                               "CASE Role " +
+                                   "when 1 then 'Кладовщик' " +
+                                   "when 0 then 'Администратор' " +
+                                   "when 2 then 'Консультант' " +
+                               "END Роль " +
                             "FROM Employees " +
                             $"where convert(varchar(max),Id) + ' ' + convert(varchar(max),LastName) + ' ' + convert(varchar(max),FirstName) + ' ' + convert(varchar(max),MiddleName) + ' ' + CASE Gender when 1 then 'Жен' when 0 then 'Муж' END + ' ' + convert(varchar(max),Salary) + ' ' + convert(varchar(max),Role) like '%{search}%'";
             try
@@ -115,10 +123,10 @@ namespace PAF.ViewModel
             string subQuery =
                         "select " +
                             "SalesCompositions.Id Код, " +
+                            "Components.Name Товар, " +
                             "SalesCompositions.Price Цена, " +
                             "SalesCompositions.Amount Количество, " +
-                            "SalesCompositions.Sum Сумма, " +
-                            "Components.Name Товар " +
+                            "SalesCompositions.Sum Сумма " +
                         "from SalesCompositions " +
                             "left join Sales on Sales.Id = SalesCompositions.Sale_Id " +
                             "inner join Employees on Sales.Employee_Id = Employees.Id " +

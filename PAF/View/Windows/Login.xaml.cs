@@ -84,17 +84,17 @@ namespace PAF.View.Windows
                     }
                 }
 
-                switch ((string)role)
+                switch ((Roles)role)
                 {
-                    case "Администратор":
+                    case Roles.Администратор:
                         new MainWindow((string)FIO).Show();
                         Close();
                         break;
-                    case "Кладовщик":
+                    case Roles.Кладовщик:
                         new MainWindowSklad((string)FIO).Show();
                         Close();
                         break;
-                    case "Консультант":
+                    case Roles.Консультант:
                         new MainWindowEmployee((string)FIO).Show();
                         Close();
                         break;
@@ -103,6 +103,27 @@ namespace PAF.View.Windows
                         break;
 
                 }
+
+
+                //switch ((string)role)
+                //{
+                //    case "Администратор":
+                //        new MainWindow((string)FIO).Show();
+                //        Close();
+                //        break;
+                //    case "Кладовщик":
+                //        new MainWindowSklad((string)FIO).Show();
+                //        Close();
+                //        break;
+                //    case "Консультант":
+                //        new MainWindowEmployee((string)FIO).Show();
+                //        Close();
+                //        break;
+                //    default:
+                //        MessageBox.Show("Роль данного пользователя не обрабатывается программой. Обратитесь к разработчику программы", "Ошибка роли");
+                //        break;
+
+                //}
             }
         }
 
