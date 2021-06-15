@@ -62,7 +62,7 @@ namespace PAF.ViewModel
                     "select " +
                     "c.Id Код, " +
                     "c.[Name] 'Наименование товара', " +
-                    "c.Price Цена, " +
+                    "cast(c.Price as decimal(15,2)) Цена, " +
                     "c.Amount Количество, " +
                     "s.[Name] Поставщик, " +
                     "t.[name] Тип " +
