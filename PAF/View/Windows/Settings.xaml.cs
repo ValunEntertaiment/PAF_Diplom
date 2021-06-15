@@ -40,6 +40,7 @@ namespace PAF.View.Windows
                 connectionStringsSection.ConnectionStrings["DbConnectionString"].ConnectionString = ConnectionString.Text;
                 config.Save();
                 ConfigurationManager.RefreshSection("connectionStrings");
+                Close();
             }
             catch (Exception x)
             {
