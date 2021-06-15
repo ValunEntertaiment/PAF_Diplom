@@ -27,12 +27,12 @@ namespace PAF.View.Windows
             if (this.WindowState == WindowState.Normal)
             {
                 this.WindowState = WindowState.Maximized;
-                FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
+                //FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowRestore;
             }
             else
             {
                 this.WindowState = WindowState.Normal;
-                FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+                //FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
             }
         }
 

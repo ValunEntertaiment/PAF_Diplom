@@ -19,7 +19,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="40"/>
             <RowDefinition  />
             <RowDefinition  />
             <RowDefinition Height="50"/>
@@ -36,9 +36,9 @@
                     <Button ToolTip="Свернуть" Style="{StaticResource ButtonsUpStyle}" Command="{Binding MinimizeCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="WindowMinimize"/>
                     </Button>
-                    <Button ToolTip="Полный экран" Style="{StaticResource ButtonsUpStyle}" Command="{Binding FullscreenCommand}">
+                    <!--<Button ToolTip="Полный экран" Style="{StaticResource ButtonsUpStyle}" Command="{Binding FullscreenCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" x:Name="FullscreenIcon" Kind="WindowMaximize"/>
-                    </Button>
+                    </Button>-->
                     <Button ToolTip="Закрыть" Style="{StaticResource ButtonsUpStyle}" Command="{Binding CloseCommand}">
                         <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Close"/>
                     </Button>
