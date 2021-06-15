@@ -42,7 +42,8 @@ namespace PAF.ViewModel
         public void Refresh()
         {
             string query =
-                        "select s.Id Код, " +
+                        "select " +
+                            //"s.Id Код, "+
                             "e.FirstName Сотрудник, " +
                             "s.date 'Дата продажи', " +
                             "sum(sc.Sum) 'Сумма продажи' " +
@@ -70,7 +71,8 @@ namespace PAF.ViewModel
         public void Refresh(string search)
         {
             string query =
-                        "select s.Id Код, " +
+                        "select " +
+                            //"s.Id Код, "+
                             "e.FirstName Сотрудник, " +
                             "s.date 'Дата продажи', " +
                             "sum(sc.Sum) 'Сумма продажи' " +
@@ -87,7 +89,7 @@ namespace PAF.ViewModel
                     DataTable temp = new DataTable();
                     adapter.Fill(temp);
                     DataTable = temp; //добавил temp чтобы срабатывал set у свойства
-                    DataTable.Columns[0].ReadOnly = true;
+                    //DataTable.Columns[0].ReadOnly = true;
                 }
             }
             catch (Exception x)
