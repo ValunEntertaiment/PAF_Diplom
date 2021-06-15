@@ -272,8 +272,8 @@ namespace PAF.ViewModel
                     }
                 }
             }
+            Refresh();
             CanButtonClick = true;
-
         }
         #endregion
 
