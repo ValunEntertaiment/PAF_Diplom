@@ -92,7 +92,7 @@ namespace PAF.ViewModel
                                "[Password] Пароль, " +
                                "Role Роль " +
                             "FROM Employees " +
-                            $"where convert(varchar,Id) + ' ' + convert(varchar,LastName) + ' ' + convert(varchar,FirstName) + ' ' + convert(varchar,MiddleName) + ' ' + CASE Gender when 1 then 'Жен' when 0 then 'Муж' END + ' ' + convert(varchar,Salary) + ' ' + convert(varchar,Role) like '%{search}%'";
+                            $"where convert(varchar(max),Id) + ' ' + convert(varchar(max),LastName) + ' ' + convert(varchar(max),FirstName) + ' ' + convert(varchar(max),MiddleName) + ' ' + CASE Gender when 1 then 'Жен' when 0 then 'Муж' END + ' ' + convert(varchar(max),Salary) + ' ' + convert(varchar(max),Role) like '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

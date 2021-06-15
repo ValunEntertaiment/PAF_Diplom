@@ -42,7 +42,7 @@ namespace PAF.ViewModel
 
         public void Refresh(string search)
         {
-            string query = $"select id Код, [Name] Поставщик, Address Адрес from supplies where convert(varchar,id) +' '+ convert(varchar,[Name]) +' '+ convert(varchar,Address) like '%{search}%'";
+            string query = $"select id Код, [Name] Поставщик, Address Адрес from supplies where convert(varchar(max),id) +' '+ convert(varchar(max),[Name]) +' '+ convert(varchar(max),Address) like '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

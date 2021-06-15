@@ -77,7 +77,7 @@ namespace PAF.ViewModel
                         "left join SalesCompositions sc on sc.Sale_Id = s.Id " +
                         "left join Employees e on e.Id = Employee_Id " +
                         "group by s.Id, e.FirstName, s.date " +
-                        $"having convert(varchar,s.Id) + ' ' + convert(varchar,e.FirstName) + ' ' + convert(varchar,s.date) + ' ' + convert(varchar,sum(sc.Sum)) like '%{search}%' ";
+                        $"having convert(varchar(max),s.Id) + ' ' + convert(varchar(max),e.FirstName) + ' ' + convert(varchar(max),s.date) + ' ' + convert(varchar(max),sum(sc.Sum)) like '%{search}%' ";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
@@ -182,7 +182,6 @@ namespace PAF.ViewModel
                             }
                         }
                     }
-
 
                     #region query
                     query =

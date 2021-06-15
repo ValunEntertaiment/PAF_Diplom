@@ -54,7 +54,7 @@ namespace PAF.ViewModel
                                "[Name] Тип " +
                                //"ShortName 'Сокращенное название' " +
                            "FROM Types " +
-                           $"where convert(varchar,Id) +' '+ convert(varchar,[Name]) +' '+ convert(varchar,ShortName) like '%{search}%' ";
+                           $"where convert(varchar(max),Id) +' '+ convert(varchar(max),[Name]) +' '+ convert(varchar(max),ShortName) like '%{search}%' ";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

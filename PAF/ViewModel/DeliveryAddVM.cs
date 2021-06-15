@@ -69,7 +69,7 @@ namespace PAF.ViewModel
                     "[Name] Поставщик, " +
                     "[Address] Адрес " +
                     "from Supplies " +
-                    $"where convert(varchar,id)  +' '+ convert(varchar,[Name])  +' '+ convert(varchar,[Address]) Like '%{search}%'";
+                    $"where convert(varchar(max),id)  +' '+ convert(varchar(max),[Name])  +' '+ convert(varchar(max),[Address]) Like '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

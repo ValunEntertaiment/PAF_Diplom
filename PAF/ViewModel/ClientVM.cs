@@ -86,7 +86,7 @@ namespace PAF.ViewModel
                            "END Пол, " +
                            "Phone Телефон " +
                        "FROM Clients " +
-                       $"where convert(varchar,id) +' '+ convert(varchar,LastName) +' '+ convert(varchar,FirstName) +' '+ convert(varchar,Middlename) +' '+ CASE Gender when 1 then 'Жен' when 0 then 'Муж' END +' '+ convert(varchar,Phone) LIKE '%{search}%'";
+                       $"where convert(varchar(max),id) +' '+ convert(varchar(max),LastName) +' '+ convert(varchar(max),FirstName) +' '+ convert(varchar(max),Middlename) +' '+ CASE Gender when 1 then 'Жен' when 0 then 'Муж' END +' '+ convert(varchar(max),Phone) LIKE '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))

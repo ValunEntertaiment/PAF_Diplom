@@ -79,7 +79,7 @@ namespace PAF.ViewModel
                                 "left join DeliveriesCompositions dc on dc.Delivery_Id = d.Id " +
                                 "left join Supplies s on s.Id = Supply_Id " +
                             "group by d.Id, s.Name, d.date " +
-                            $"having convert(varchar,d.Id) + ' ' + convert(varchar,s.Name) + ' ' + convert(varchar,d.date) + ' ' + convert(varchar,sum(dc.Sum)) like '%{search}%'";
+                            $"having convert(varchar(max),d.Id) + ' ' + convert(varchar(max),s.Name) + ' ' + convert(varchar(max),d.date) + ' ' + convert(varchar(max),sum(dc.Sum)) like '%{search}%'";
 
 
 

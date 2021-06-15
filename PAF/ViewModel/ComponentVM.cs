@@ -33,7 +33,7 @@ namespace PAF.ViewModel
                     "select "+
                     "c.Id Код, "+
                     "c.[Name] 'Наименование товара', "+
-                    "c.Price Цена, "+
+                    "cast(c.Price as decimal(15,2)) Цена, " +
                     "c.Amount Количество, "+
                     "s.[Name] Поставщик, "+
                     "t.[name] Тип "+
@@ -69,7 +69,7 @@ namespace PAF.ViewModel
                     "from components c " +
                     "inner join Supplies s on s.Id = c.Supply_Id " +
                     "inner join Types t on t.Id = c.[Type_Id] " +
-                    $"where convert(varchar,c.Id) + ' ' + convert(varchar,c.[Name]) + ' ' + convert(varchar,c.Price) + ' ' + convert(varchar,c.Amount) + ' ' + convert(varchar,s.[Name]) + ' ' + convert(varchar,t.[Name]) Like '%{search}%'";
+                    $"where convert(varchar(max),c.Id) + ' ' + convert(varchar(max),c.[Name]) + ' ' + convert(varchar(max),c.Price) + ' ' + convert(varchar(max),c.Amount) + ' ' + convert(varchar(max),s.[Name]) + ' ' + convert(varchar(max),t.[Name]) Like '%{search}%'";
             try
             {
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
@@ -154,7 +154,7 @@ namespace PAF.ViewModel
 
             Refresh();
 
-            this.Width = Width >= 1150 ? Width - 350 : 800;          //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
+            this.Width = Width >= 1150 ? Width - 350 : 800;     //1150 минимальная ширина окна. 350-Сумма ширины всех статичных элементов. 800-Минимальная ширина страницы
             this.Height = Height >= 600 ? Height - 80 : 520;   //600 минимальная высота окна. 125-Сумма высоты всех статичных элементов. 475-Минимальная высота страницы
         }
 
