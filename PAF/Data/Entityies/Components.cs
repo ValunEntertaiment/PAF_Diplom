@@ -13,7 +13,7 @@ namespace PAF.Data.Entityies
         /// <summary> Единиц на складе </summary>
         public int Amount { get; set; }
         /// <summary> Цена товара </summary>
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         /// <summary> Id поставщика </summary>
         public Supplies Supply { get; set; }
         /// <summary> Id состава продажи </summary>

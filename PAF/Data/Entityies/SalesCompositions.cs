@@ -7,7 +7,7 @@
         /// <summary> Цена реализации </summary>
         public decimal Price { get; set; }
         /// <summary> Количество </summary>
-        public decimal Amount { get; set; }
+        public int Amount { get; set; }
         /// <summary> Стоимость </summary>
         public decimal Sum
         {
