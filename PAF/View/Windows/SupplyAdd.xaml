@@ -44,8 +44,8 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="15" Width="250">
             <Grid>
-                <TextBlock x:Name="NameText" Text="Поставщик" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Name, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="Name" Style="{StaticResource TextBoxStyle}"/>
+                <TextBlock x:Name="NameText" Text="Поставщик" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBox x:Name="TBName" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
                 <TextBlock x:Name="AdressText" Text="Адрес" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Adress, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />

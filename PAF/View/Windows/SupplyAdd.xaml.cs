@@ -34,7 +34,7 @@ namespace PAF.View.Windows
         {
             bool ok = true;
 
-            if (Name.Text == "")
+            if (TBName.Text == "")
             {
                 ok = false;
                 NameText.Foreground = new SolidColorBrush(Colors.Red);
@@ -42,7 +42,7 @@ namespace PAF.View.Windows
             else
             {
                 NameText.Foreground = new SolidColorBrush(Colors.Gray);
-                supply.Name = Name.Text;
+                supply.Name = TBName.Text;
             }
 
             if (Adress.Text == "")
@@ -64,7 +64,7 @@ namespace PAF.View.Windows
                         connection.Open();
                         string q =
                                     "insert into Supplies([Name], Address) " +
-                                    $"values ('{Name.Text}','{ Adress.Text}') ";
+                                    $"values ('{TBName.Text}','{ Adress.Text}') ";
                         SqlCommand command = new SqlCommand(q, connection);
                         command.ExecuteNonQuery();
                         connection.Close();
