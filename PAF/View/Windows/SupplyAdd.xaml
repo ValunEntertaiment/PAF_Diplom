@@ -44,11 +44,11 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="15" Width="250">
             <Grid>
-                <TextBlock Text="Поставщик" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Name, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <TextBlock x:Name="NameText" Text="Поставщик" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Name, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 <TextBox x:Name="Name" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock Text="Адрес" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Adress, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock x:Name="AdressText" Text="Адрес" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Adress, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBox x:Name="Adress" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
         </StackPanel>

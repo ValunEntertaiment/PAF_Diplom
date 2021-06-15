@@ -40,34 +40,79 @@ namespace PAF.View.Windows
         private void ButtonEmployeeAdd(object sender, RoutedEventArgs e)
         {
             bool ok = true;
+            if (LastName.Text == "")
+            {
+                ok = false;
+                LastNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                LastNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.LastName = LastName.Text;
+            }
 
-            employee.LastName = LastName.Text;
-            employee.FirstName = FirstName.Text;
-            employee.MiddleName = MiddleName.Text;
+            if (FirstName.Text == "")
+            {
+                ok = false;
+                FirstNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                FirstNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.FirstName = FirstName.Text;
+            }
+
+            if (MiddleName.Text == "")
+            {
+                ok = false;
+                MiddleNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                MiddleNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.MiddleName = MiddleName.Text;
+            }
+
+
 
             if (Gender.SelectedValue == null)
                 employee.Gender = Genders.Муж;
             else
                 employee.Gender = (Genders)Gender.SelectedValue;
             int gender = employee.Gender == Genders.Муж ? 0 : 1;
-            
-            if(Login.Text == null || Login.Text == "")
+
+
+
+            if (Login.Text == "")
             {
+                ok = false;
                 LoginText.Foreground = new SolidColorBrush(Colors.Red);
             }
             else
+            {
+                LoginText.Foreground = new SolidColorBrush(Colors.Gray);
                 employee.Login = Login.Text;
+            }
 
 
-            if (Password.Text == null || Password.Text == "")
-                MessageBox.Show("Введите пароль", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+
+
+            if (Password.Text == "")
+            {
+                ok = false;
+                PasswordText.Foreground = new SolidColorBrush(Colors.Red);
+            }
             else
+            {
+                PasswordText.Foreground = new SolidColorBrush(Colors.Gray);
                 employee.Password = Password.Text;
+            }
 
 
+           
 
-            if (Role.SelectedValue != null)
-                switch ((Roles)Role.SelectedValue)
+            switch ((Roles)Role.SelectedValue)
                 {
                     case Roles.Консультант:
                         employee.Role = "Консультант";
@@ -79,33 +124,39 @@ namespace PAF.View.Windows
                         employee.Role = "Администратор";
                         break;
                 }
-            else
-                MessageBox.Show("Роль не введена", "Роль не введена", MessageBoxButton.OK,MessageBoxImage.Warning);
 
             decimal temp;
             if (decimal.TryParse(Salary.Text, out temp))
+            {
+                SalaryText.Foreground = new SolidColorBrush(Colors.Gray);
                 employee.Salary = temp;
+            }
             else
-                MessageBox.Show("Зарплата введена не корректно","",MessageBoxButton.OK,MessageBoxImage.Warning);
+            {
+                ok = false;
+                SalaryText.Foreground = new SolidColorBrush(Colors.Red);
+                Salary.Text = "";
+            }
 
-            //try
-            //{
-            //    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
-            //    {
-            //        connection.Open();
-            //        string q =
-            //                    "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary,login,password,role) " +
-            //                    $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary},{employee.Login},{employee.Password},{employee.Role}) ";
-            //        SqlCommand command = new SqlCommand(q, connection);
-            //        command.ExecuteNonQuery();
-            //        connection.Close();
-            //    }
-            //    Close();
-            //}
-            //catch (Exception x)
-            //{
-            //    MessageBox.Show(x.Message, "EmployeeAdd");
-            //}
+            if(ok)
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    connection.Open();
+                    string q =
+                                "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary,Login,Password,Role) " +
+                                $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary},'{employee.Login}','{employee.Password}','{employee.Role}') ";
+                    SqlCommand command = new SqlCommand(q, connection);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                Close();
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "EmployeeAdd");
+            }
         }
 
         private void ButtonClose(object sender, RoutedEventArgs e)

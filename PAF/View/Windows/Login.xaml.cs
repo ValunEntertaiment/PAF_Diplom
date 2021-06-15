@@ -86,15 +86,15 @@ namespace PAF.View.Windows
 
                 switch ((string)role)
                 {
-                    case "Админ":
+                    case "Администратор":
                         new MainWindow((string)FIO).Show();
                         Close();
                         break;
-                    case "Склад":
+                    case "Кладовщик":
                         new MainWindowSklad((string)FIO).Show();
                         Close();
                         break;
-                    case "Продажа":
+                    case "Консультант":
                         new MainWindowEmployee((string)FIO).Show();
                         Close();
                         break;

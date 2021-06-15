@@ -1,7 +1,9 @@
-﻿using System;
+﻿using PAF.Data.Entityies;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Windows.Media;
 
 namespace PAF.View.Windows
 {
@@ -10,6 +12,7 @@ namespace PAF.View.Windows
     /// </summary>
     public partial class SupplyAdd : Window
     {
+        Supplies supply = new Supplies();
         public SupplyAdd()
         {
             InitializeComponent();
@@ -29,24 +32,49 @@ namespace PAF.View.Windows
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
-            try
+            bool ok = true;
+
+            if (Name.Text == "")
             {
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                ok = false;
+                NameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                NameText.Foreground = new SolidColorBrush(Colors.Gray);
+                supply.Name = Name.Text;
+            }
+
+            if (Adress.Text == "")
+            {
+                ok = false;
+                AdressText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                AdressText.Foreground = new SolidColorBrush(Colors.Gray);
+                supply.Address = Adress.Text;
+            }
+
+            if(ok)
+                try
                 {
-                    connection.Open();
-                    string q =
-                                "insert into Supplies([Name], Address) " +
-                                $"values ('{Name.Text}','{ Adress.Text}') ";
-                    SqlCommand command = new SqlCommand(q, connection);
-                    command.ExecuteNonQuery();
-                    connection.Close();
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                    {
+                        connection.Open();
+                        string q =
+                                    "insert into Supplies([Name], Address) " +
+                                    $"values ('{Name.Text}','{ Adress.Text}') ";
+                        SqlCommand command = new SqlCommand(q, connection);
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                    Close();
                 }
-                Close();
-            }
-            catch (Exception x)
-            {
-                MessageBox.Show(x.Message, "Client");
-            }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message, "Client");
+                }
 
         }
 
