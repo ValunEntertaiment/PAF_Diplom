@@ -165,7 +165,7 @@ namespace PAF.ViewModel
                                             "end " +
                                         "insert into Components([Name],Price, Amount, Supply_Id, [Type_Id]) " +
 
-                                        $@"values(N'{row[0]}',{row[2]}*1.1, {row[3]}, {SelectedSupply.Row.ItemArray[0]}, @IdType) " +
+                                        $@"values(N'{row[0]}',{row[2]}*1.2, {row[3]}, {SelectedSupply.Row.ItemArray[0]}, @IdType) " +
 
                                         "set @IdComponent = scope_identity() " +
 
