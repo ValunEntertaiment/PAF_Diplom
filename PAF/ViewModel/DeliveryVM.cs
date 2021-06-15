@@ -45,7 +45,7 @@ namespace PAF.ViewModel
         public void Refresh()
         {
             string query = "select " +
-                                //"d.Id Код, "+
+                                "d.Id Код, "+
                                 "s.Name Поставщик, " +
                                 "d.date 'Дата поставки', " +
                                 "sum(dc.Sum) 'Сумма поставки' " +
@@ -73,7 +73,7 @@ namespace PAF.ViewModel
         public void Refresh(string search)
         {
             string query = "select " +
-                                //"d.Id Код, "+
+                                "d.Id Код, "+
                                 "s.Name Поставщик, " +
                                 "d.date 'Дата поставки', " +
                                 "sum(dc.Sum) 'Сумма поставки' " +

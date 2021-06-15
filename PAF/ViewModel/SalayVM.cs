@@ -43,7 +43,7 @@ namespace PAF.ViewModel
         {
             string query =
                         "select " +
-                            //"s.Id Код, "+
+                            "s.Id Код, "+
                             "e.FirstName Сотрудник, " +
                             "s.date 'Дата продажи', " +
                             "sum(sc.Sum) 'Сумма продажи' " +
@@ -72,7 +72,7 @@ namespace PAF.ViewModel
         {
             string query =
                         "select " +
-                            //"s.Id Код, "+
+                            "s.Id Код, "+
                             "e.FirstName Сотрудник, " +
                             "s.date 'Дата продажи', " +
                             "sum(sc.Sum) 'Сумма продажи' " +
