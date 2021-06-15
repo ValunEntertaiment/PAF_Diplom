@@ -146,7 +146,16 @@ namespace PAF.ViewModel
                 string filename = openFileDialog.FileName;
 
                 List<string[]> errors = new List<string[]>();
-                List<string> file = new List<string>(File.ReadAllLines(filename));
+                List<string> file = new List<string>();
+                try
+                {
+                    file = new List<string>(File.ReadAllLines(filename));
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                
                 string columns = file[0];
                 file.Remove(file[0]);
                 string[] row;

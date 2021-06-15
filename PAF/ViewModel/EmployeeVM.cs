@@ -58,9 +58,9 @@ namespace PAF.ViewModel
                                "[Login] Логин, " +
                                "[Password] Пароль, " +
                                "CASE Role " +
-                                   "when 1 then 'Кладовщик' " +
-                                   "when 0 then 'Администратор' " +
-                                   "when 2 then 'Консультант' "+
+                                    "when 0 then 'Администратор' " +
+                                    "when 1 then 'Кладовщик' " +
+                                    "when 2 then 'Консультант' "+
                                "END Роль "+
                             "FROM Employees ";
             try
@@ -95,8 +95,8 @@ namespace PAF.ViewModel
                                "[Login] Логин, " +
                                "[Password] Пароль, " +
                                "CASE Role " +
-                                   "when 1 then 'Кладовщик' " +
                                    "when 0 then 'Администратор' " +
+                                   "when 1 then 'Кладовщик' " +
                                    "when 2 then 'Консультант' " +
                                "END Роль " +
                             "FROM Employees " +
@@ -164,7 +164,11 @@ namespace PAF.ViewModel
                            "Salary Зарплата, " +
                            "[Login] Логин, " +
                            "[Password] Пароль, " +
-                           "Role Роль " +
+                           "CASE Role " +
+                                    "when 'Администратор' then 0 " +
+                                    "when 'Кладовщик' then 1 " +
+                                    "when 'Консультант' then 2 " +
+                               "END Роль " + 
                        "FROM Employees";
                 using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
