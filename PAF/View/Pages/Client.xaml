@@ -7,7 +7,7 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:core="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
-      Height="{Binding Height}" Width="{Binding Width}" >
+      Height="450" Width="800" >
     <Page.DataContext>
         <vm:ClientVM/>
     </Page.DataContext>

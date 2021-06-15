@@ -1,5 +1,4 @@
-﻿using PAF.Data.Clases;
-using PAF.Data.Entityies;
+﻿using PAF.Data.Entityies;
 using PAF.ViewModel;
 using System;
 using System.Configuration;
@@ -50,44 +49,46 @@ namespace PAF.View.Windows
 
             employee.Login = Login.Text;
             employee.Password = Password.Text;
-            switch ((Roles)Role.SelectedValue)
-            {
-                case Roles.Консультант:
-                    employee.Role = "Консультант";
-                    break;
-                case Roles.Кладовщик:
-                    employee.Role = "Кладовщик";
-                    break;
-                case Roles.Администратор:
-                    employee.Role = "Администратор";
-                    break;
-            }
+            if (Role.SelectedValue != null)
+                switch ((Roles)Role.SelectedValue)
+                {
+                    case Roles.Консультант:
+                        employee.Role = "Консультант";
+                        break;
+                    case Roles.Кладовщик:
+                        employee.Role = "Кладовщик";
+                        break;
+                    case Roles.Администратор:
+                        employee.Role = "Администратор";
+                        break;
+                }
+            else
+                MessageBox.Show("Укажите роль", "Роль не указана", MessageBoxButton.OK, MessageBoxImage.Warning);
+            
+
+            decimal temp;
+            if (decimal.TryParse(Salary.Text, out temp))
+                employee.Salary = temp;
+            else
+                MessageBox.Show("Зарплата введена не корректно", "Ошибка зарплаты", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             try
             {
-                employee.Salary = Convert.ToDecimal(Salary.Text);
-                try
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
                 {
-                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
-                    {
-                        connection.Open();
-                        string q =
-                                    "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary) " +
-                                    $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary}) ";
-                        SqlCommand command = new SqlCommand(q, connection);
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    Close();
+                    connection.Open();
+                    string q =
+                                "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary) " +
+                                $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary}) ";
+                    SqlCommand command = new SqlCommand(q, connection);
+                    command.ExecuteNonQuery();
+                    connection.Close();
                 }
-                catch (Exception x)
-                {
-                    MessageBox.Show(x.Message, "EmployeeAdd");
-                }
+                Close();
             }
-            catch
+            catch (Exception x)
             {
-                MessageBox.Show("Зарплата введена не корректно");
+                MessageBox.Show(x.Message, "EmployeeAdd");
             }
         }
 

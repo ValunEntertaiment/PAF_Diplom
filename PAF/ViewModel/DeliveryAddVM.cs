@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -106,8 +107,8 @@ namespace PAF.ViewModel
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string filename = openFileDialog.FileName;
-
-                    string[] file = File.ReadAllLines(filename);
+                    Encoding qwe = Encoding.UTF8;
+                    string[] file = File.ReadAllLines(filename,qwe);
                     string[] row;
                     string query;
                     bool first = false;

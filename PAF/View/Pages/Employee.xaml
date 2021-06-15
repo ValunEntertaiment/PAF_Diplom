@@ -11,7 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="45" />
-            <RowDefinition Height="25" />
+            <!--<RowDefinition Height="25" />-->
             <RowDefinition Height="*" />
             <!--<RowDefinition Height="45" />-->
         </Grid.RowDefinitions>
@@ -27,10 +27,10 @@
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
         <!--переключатель-->
-        <StackPanel Grid.Row="2" Visibility="{Binding RadioButtonVisible}" Orientation="Horizontal" HorizontalAlignment="Left">
+        <!--<StackPanel Grid.Row="2" Visibility="{Binding RadioButtonVisible}" Orientation="Horizontal" HorizontalAlignment="Left">
             <ToggleButton VerticalAlignment="Center" IsChecked="{Binding ToggleButton}" />
             <TextBlock Text="Показать второстепенную таблицу" VerticalAlignment="Center" />
-        </StackPanel>
+        </StackPanel>-->
         <!--Второстепенная таблица-->
         <DataGrid x:Name="dg1" Grid.Row="3" ItemsSource="{Binding Sales, Mode=TwoWay}"
                   SelectionMode="Single" CanUserAddRows="False">
