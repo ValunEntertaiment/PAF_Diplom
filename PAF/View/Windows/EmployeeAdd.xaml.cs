@@ -1,5 +1,4 @@
-﻿using PAF.Data.Clases;
-using PAF.Data.Entityies;
+﻿using PAF.Data.Entityies;
 using PAF.ViewModel;
 using System;
 using System.Configuration;
