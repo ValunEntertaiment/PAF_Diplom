@@ -8,10 +8,10 @@ namespace PAF.View.Windows
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowEmployee : Window
     {
         MainWindowVM VM;
-        public MainWindow(string FIO)
+        public MainWindowEmployee(string FIO)
         {
             InitializeComponent();
             this.FIO.Text = FIO;

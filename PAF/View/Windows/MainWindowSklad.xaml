@@ -4,11 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:PAF.ViewModel"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" x:Class="PAF.View.Windows.MainWindow"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        x:Class="PAF.View.Windows.MainWindowSklad"
         mc:Ignorable="d" Height="{Binding Path=Height, Mode=TwoWay}" Width="{Binding Path=Width, Mode=TwoWay}" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True">
-    <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />        
-    </Window.Resources>
+
     <!--Главная область-->
     <Grid Background="#FFF3F5F5">
         <Grid.ColumnDefinitions>
@@ -45,6 +44,7 @@
                 </StackPanel>
             </Grid>
         </StackPanel>
+
         <Grid HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2">
             <TextBlock Margin="0 4 0 0" Text="Поиск" Width="150" Foreground="Gray" Visibility="{Binding ElementName=Search, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
             <TextBox x:Name="Search" Width="150" Text="{Binding Search, Mode=TwoWay}" TextChanged="Search_TextChanged"/>
@@ -57,29 +57,12 @@
             </Grid>
         </StackPanel>
         
+
         <!--Левая панель-->
         <Grid Background="#263238" Grid.RowSpan="5">
             <StackPanel>
                 <Image Margin="10" Height="120" Source="/PAF;component/Resources/Logo.png"/>
                 <StackPanel>
-                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectClients}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="AccountMultiple"/>
-                            <TextBlock Text="Клиенты" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectSales}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Shopping"/>
-                            <TextBlock Text="Продажи" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectEmployees}">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="AccountTie"/>
-                            <TextBlock Text="Сотрудники" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
                     <Button Style="{StaticResource ButtonsStyle}" Command="{Binding SelectDeliveries}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Style="{StaticResource MaterialStyle}" Kind="Truck"/>

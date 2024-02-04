@@ -1,4 +1,4 @@
-﻿using PAF.ViewModel;
+﻿using PAF.ViewModel.BaseVM;
 using System.Windows.Controls;
 
 namespace PAF.View.Pages
@@ -8,10 +8,10 @@ namespace PAF.View.Pages
     /// </summary>
     public partial class Delivery : Page
     {
-        public Delivery()
+        public Delivery(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new DeliveryVM();
+            this.DataContext = page;
         }
     }
 }

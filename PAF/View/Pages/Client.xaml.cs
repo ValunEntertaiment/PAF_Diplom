@@ -1,21 +1,17 @@
-﻿using PAF.Data.Clases;
-using PAF.Data.Entityies;
-using PAF.ViewModel;
-using System.Collections.Generic;
-using System.Windows;
+﻿using PAF.ViewModel.BaseVM;
 using System.Windows.Controls;
 
 namespace PAF.View.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для Employee.xaml
+    /// Логика взаимодействия для Client.xaml
     /// </summary>
     public partial class Client : Page
     {
-        public Client()
+        public Client(IPage clientVM)
         {
             InitializeComponent();
-            this.DataContext = new ClientVM();
+            this.DataContext = clientVM;
         }
     }
 }

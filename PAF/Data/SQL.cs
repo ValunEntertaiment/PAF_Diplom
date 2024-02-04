@@ -104,14 +104,14 @@ namespace PAF.Data
         {
             using (var context = new MyDbContext())
             {
-                return (from e in context.Supplies select e).ToList();
+                return null; //(from e in context.Supplies select e).ToList();
             }
         }
         public List<Sales> SelectSalay()
         {
             using (var context = new MyDbContext())
             {
-                return (from e in context.Sales select e).ToList();
+                return null;//(from e in context.Sales select e).ToList();
             }
         }
         #region Component
@@ -155,7 +155,7 @@ namespace PAF.Data
         {
             using (var context = new MyDbContext())
             {
-                return (from e in context.Types select e).ToList<Types>();
+                return null; //(from e in context.Types select e).ToList<Types>();
             }
         }
         public void UpdateType(List<Types> types)

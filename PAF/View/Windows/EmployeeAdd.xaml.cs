@@ -1,8 +1,10 @@
-﻿using PAF.Data.Clases;
-using PAF.Data.Entityies;
+﻿using PAF.Data.Entityies;
 using PAF.ViewModel;
 using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Windows;
+using System.Windows.Media;
 
 namespace PAF.View.Windows
 {
@@ -18,6 +20,9 @@ namespace PAF.View.Windows
             this.DataContext = new EmployeeVM();
             Gender.ItemsSource = Enum.GetValues(typeof(Genders));
             Gender.SelectedValue = Genders.Муж;
+            Role.ItemsSource = Enum.GetValues(typeof(Roles));
+            Role.SelectedValue = Roles.Консультант;
+            employee.Role = Roles.Консультант;
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -34,25 +39,125 @@ namespace PAF.View.Windows
 
         private void ButtonEmployeeAdd(object sender, RoutedEventArgs e)
         {
-            employee.LastName = LastName.Text;
-            employee.FirstName = FirstName.Text;
-            employee.MiddleName = MiddleName.Text;
+            bool ok = true;
+            if (LastName.Text == "")
+            {
+                ok = false;
+                LastNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                LastNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.LastName = LastName.Text;
+            }
+
+            if (FirstName.Text == "")
+            {
+                ok = false;
+                FirstNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                FirstNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.FirstName = FirstName.Text;
+            }
+
+            if (MiddleName.Text == "")
+            {
+                ok = false;
+                MiddleNameText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                MiddleNameText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.MiddleName = MiddleName.Text;
+            }
+
+
 
             if (Gender.SelectedValue == null)
                 employee.Gender = Genders.Муж;
             else
                 employee.Gender = (Genders)Gender.SelectedValue;
+            int gender = employee.Gender == Genders.Муж ? 0 : 1;
 
+
+
+            if (Login.Text == "")
+            {
+                ok = false;
+                LoginText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                LoginText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.Login = Login.Text;
+            }
+
+
+
+
+
+            if (Password.Text == "")
+            {
+                ok = false;
+                PasswordText.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                PasswordText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.Password = Password.Text;
+            }
+
+
+
+            employee.Role = (Roles)Role.SelectedValue;
+            
+
+            //switch ((Roles)Role.SelectedValue)
+            //    {
+            //        case Roles.Консультант:
+            //            employee.Role = "Администратор";
+            //            break;
+            //        case Roles.Кладовщик:
+            //            employee.Role = "Кладовщик";
+            //            break;
+            //        case Roles.Администратор:
+            //            employee.Role = "Администратор";
+            //            break;
+            //    }
+
+            decimal temp;
+            if (decimal.TryParse(Salary.Text, out temp))
+            {
+                SalaryText.Foreground = new SolidColorBrush(Colors.Gray);
+                employee.Salary = temp;
+            }
+            else
+            {
+                ok = false;
+                SalaryText.Foreground = new SolidColorBrush(Colors.Red);
+                Salary.Text = "";
+            }
+
+            if(ok)
             try
             {
-                employee.Salary = Convert.ToDecimal(Salary.Text);
-                new SQLEmployee().InsertEmployee(employee);
-
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    connection.Open();
+                    string q =
+                                "insert into Employees(LastName,FirstName,MiddleName,Gender,Salary,Login,Password,Role) " +
+                                $"values ('{employee.LastName}','{ employee.FirstName}','{ employee.MiddleName}',{gender},{ employee.Salary},'{employee.Login}','{employee.Password}',{(int)employee.Role}) ";
+                    SqlCommand command = new SqlCommand(q, connection);
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
                 Close();
             }
-            catch
+            catch (Exception x)
             {
-                MessageBox.Show("Зарплата введена не корректно");
+                MessageBox.Show(x.Message, "EmployeeAdd");
             }
         }
 

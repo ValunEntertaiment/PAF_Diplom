@@ -8,10 +8,10 @@ namespace PAF.View.Windows
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowSklad : Window
     {
         MainWindowVM VM;
-        public MainWindow(string FIO)
+        public MainWindowSklad(string FIO)
         {
             InitializeComponent();
             this.FIO.Text = FIO;
@@ -32,7 +32,7 @@ namespace PAF.View.Windows
             else
             {
                 this.WindowState = WindowState.Normal;
-                //FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
+               // FullscreenIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.WindowMaximize;
             }
         }
 

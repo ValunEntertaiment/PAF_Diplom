@@ -1,4 +1,5 @@
 ﻿using PAF.ViewModel;
+using System;
 using System.Windows;
 
 namespace PAF.View.Windows
@@ -11,7 +12,9 @@ namespace PAF.View.Windows
         public DeliveryAdd()
         {
             InitializeComponent();
-            this.DataContext = new DeliveryVM();
+            DeliveryAddVM VM = new DeliveryAddVM();
+            DataContext = VM;
+            if (VM.CloseAction == null) VM.CloseAction = new Action(() => this.Close());
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

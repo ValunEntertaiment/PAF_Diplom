@@ -1,14 +1,15 @@
 ﻿using PAF.ViewModel;
+using PAF.ViewModel.BaseVM;
 using System.Windows.Controls;
 
 namespace PAF.View.Pages
 {
     public partial class Component : Page
     {
-        public Component()
+        public Component(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new ComponentVM();
+            this.DataContext = page;
         }
     }
 }

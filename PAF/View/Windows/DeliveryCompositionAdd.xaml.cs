@@ -1,4 +1,5 @@
 ﻿using PAF.ViewModel;
+using PAF.ViewModel.BaseVM;
 using System.Windows;
 
 namespace PAF.View.Windows
@@ -8,10 +9,10 @@ namespace PAF.View.Windows
     /// </summary>
     public partial class DeliveryCompositionAdd : Window
     {
-        public DeliveryCompositionAdd()
+        public DeliveryCompositionAdd(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new DeliveryCompositionVM();
+            this.DataContext = page;
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

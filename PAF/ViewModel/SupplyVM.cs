@@ -1,21 +1,84 @@
 ﻿using PAF.Commands.Base;
-using PAF.Data;
-using PAF.Data.Entityies;
 using PAF.View.Windows;
-using System.Collections.Generic;
+using PAF.ViewModel.BaseVM;
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PAF.ViewModel
 {
-    class SupplyVM : ViewModelForWindow
+    class SupplyVM : ViewModelForWindow, IPage
     {
+        #region Properties
+        public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
+        DataTable _DataTable;
+
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
+        #endregion
 
-        Supplies _AddSupplies = new Supplies();
-        /// <summary>Данные нового клиента</summary>
-        public Supplies AddSupplies { get => _AddSupplies; set => Set(ref _AddSupplies, value); }
+        public void Refresh()
+        {
+            string query = "select id Код, [Name] Поставщик, Address Адрес from supplies";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Supply");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = $"select id Код, [Name] Поставщик, Address Адрес from supplies where convert(varchar(max),id) +' '+ convert(varchar(max),[Name]) +' '+ convert(varchar(max),Address) like '%{search}%'";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Supply");
+            }
+        }
+
+        private void Upload()
+        {
+            try
+            {
+                string query = "select id Код, [Name] Поставщик, Address Адрес from supplies";
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    adapter.SelectCommand = new SqlCommand(query, connection);
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    adapter.UpdateCommand = builder.GetUpdateCommand();
+                    adapter.Update(DataTable);
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
 
         #region Commands
 
@@ -26,7 +89,7 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            //new SQL().UpdateSupply(_Suppies);
+            Upload();
             CanButtonClick = true;
         }
         #endregion
@@ -37,10 +100,9 @@ namespace PAF.ViewModel
         private void OnAddExecuted(object p)
         {
             CanButtonClick = false;
-            //AddClient = new Clients();
-            SupplyAdd supplyAdd = new SupplyAdd();
-            supplyAdd.ShowDialog();
+            new SupplyAdd().ShowDialog();
             CanButtonClick = true;
+            Refresh();
         }
         #endregion
 
@@ -50,7 +112,7 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            Supplies = new SQL().SelectSupply();
+            Refresh();
             CanButtonClick = true;
         }
         #endregion
@@ -61,25 +123,11 @@ namespace PAF.ViewModel
         private void OnDeleteExecuted(object p)
         {
             CanButtonClick = false;
-            MessageBox.Show("Delete");
-            CanButtonClick = true;
-        }
-        #endregion
-
-        #region AddClientCommand
-        public ICommand AddClientCommand { get; set; }
-        private bool CanAddClientExecute(object p) => CanButtonClick;
-        private void OnAddClientExecuted(object p)
-        {
-            CanButtonClick = false;
-            //MessageBox.Show(AddClient.FirstName + " " + AddClient.LastName + " " + AddClient.MiddleName);
+            Upload();
             CanButtonClick = true;
         }
         #endregion
         #endregion
-
-        public List<Supplies> Supplies { get => _Suppies; set => Set(ref _Suppies, value); }
-        List<Supplies> _Suppies = new SQL().SelectSupply();
 
         public SupplyVM()
         {
@@ -88,8 +136,9 @@ namespace PAF.ViewModel
             AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
             DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
-            AddClientCommand = new LambdaCommand(OnAddClientExecuted, CanAddClientExecute);
             #endregion
+
+            Refresh();
         }
     }
 }

@@ -3,28 +3,24 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:vm="clr-namespace:PAF.ViewModel"
-      xmlns:enum="clr-namespace:PAF.Data.Entityies"
-      xmlns:date="clr-namespace:PAF.Data.Entityies"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:core="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Client">
+      Height="450" Width="800" >
     <Page.DataContext>
         <vm:ClientVM/>
     </Page.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="45"/>
-            <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="*" />
+            <!--<RowDefinition Height="45" />-->
         </Grid.RowDefinitions>
         <!--основная таблица-->
-        <DataGrid x:Name="dg" ItemsSource="{Binding Clients, Mode=OneWay}" SelectionMode="Single"
-                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}" CanUserAddRows="False">
+        <DataGrid x:Name="dg" ItemsSource="{Binding DataTable, Mode=TwoWay}" SelectionMode="Single" CanUserAddRows="False"
+                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}">
         </DataGrid>
         <!--кнопочки основной таблицы-->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -34,20 +30,20 @@
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
         <!--переключатель-->
-        <StackPanel Grid.Row="2" Visibility="{Binding RadioButtonVisible}" Orientation="Horizontal" HorizontalAlignment="Left">
+        <!--<StackPanel Grid.Row="2" Visibility="{Binding RadioButtonVisible}" Orientation="Horizontal" HorizontalAlignment="Left">
             <ToggleButton VerticalAlignment="Center" IsChecked="{Binding ToggleButton}" />
             <TextBlock Text="Показать второстепенную таблицу" VerticalAlignment="Center" />
-        </StackPanel>
+        </StackPanel>-->
         <!--Второстепенная таблица-->
-        <DataGrid x:Name="dg1" Grid.Row="3" ItemsSource="{Binding Clients, Mode=OneWay}" SelectionMode="Single" 
-                  SelectedItem="{Binding Path=SelectedClient, Mode=TwoWay}" CanUserAddRows="False">
+        <DataGrid x:Name="dg1" Grid.Row="2" ItemsSource="{Binding SubTable, Mode=TwoWay}"
+                  SelectionMode="Single" CanUserAddRows="False">
         </DataGrid>
         <!--кнопочки второстепенной таблицы-->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
+        <!--<StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button ToolTip="Сохранить внесенные изменения" Margin="0 0 100 0" Content="Внести изменения" Command="{Binding SaveChangesCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Добавить новую запись" Margin="0 0 100 0" Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Удалить выбранную запись" Margin="0 0 100 0" Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Page>

@@ -1,19 +1,18 @@
-﻿<Window x:Class="PAF.View.Windows.SupplyAdd"
+﻿<Window x:Class="PAF.View.Windows.Login"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
+        xmlns:local="clr-namespace:PAF.View.Windows" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:i1="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d"
-        Title="SupplyAdd" Width="300" Height="450" ResizeMode="NoResize" WindowStyle="None">
+        WindowStyle="None" Height="400" Width="300" ResizeMode="NoResize">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Style x:Key="TextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource  MaterialDesignTextBlock}">
             <Setter Property="Foreground" Value="Gray"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0 10"/>
+            <Setter Property="Margin" Value="10"/>
         </Style>
         <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource  MaterialDesignTextBox}">
             <Setter Property="Margin" Value="0 10"/>
@@ -23,11 +22,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
-            <RowDefinition/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="138"/>
+            <RowDefinition />
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
+        
         <StackPanel VerticalAlignment="Top" Grid.ColumnSpan="4" Background="#1240AB" Opacity="1" MouseDown="StackPanel_MouseDown">
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Height="25" Style="{StaticResource ButtonsUpStyle}" Click="Button_Click_1">
+                    <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Connection"/>
+                </Button>
                 <Button Height="25" Style="{StaticResource ButtonsUpStyle}" >
                     <!--Command="{Binding CloseCommand}"-->
                     <materialDesign:PackIcon Style="{StaticResource MaterialUpStyle}" Kind="Close"/>
@@ -42,19 +46,23 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="15" Width="250">
+
+        <Image Grid.Row="1" Margin="0 30 0 0" Height="110" Source="/PAF;component/Resources/Logo копия.png"/>
+
+        <StackPanel Grid.Row="2" Width="170" Margin="0 25">
             <Grid>
-                <TextBlock x:Name="NameText" Text="Поставщик" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBName, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                <TextBox x:Name="TBName" Style="{StaticResource TextBoxStyle}"/>
+                <!--<TextBlock Text="Логин" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=TBLogin, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                <TextBox x:Name="TBLogin"  materialDesign:HintAssist.Hint="Логин" Style="{StaticResource TextBoxStyle}"/>
             </Grid>
             <Grid>
-                <TextBlock x:Name="AdressText" Text="Адрес" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Adress, Path=Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBox x:Name="Adress" Style="{StaticResource TextBoxStyle}"/>
+                <!--<TextBlock Text="Пароль" Style="{StaticResource TextBlockStyle}" Visibility="{Binding ElementName=Password, Path=Password.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                <PasswordBox x:Name="Password" materialDesign:HintAssist.Hint="Пароль" Margin="0 10" FontSize="14"/>
             </Grid>
+            <Button Content="Войти" Margin="0 20" Style="{StaticResource ViewButtonStule}" Click="Button_Click"/>
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить" Margin="0 0 40 0" Style="{StaticResource ViewButtonStule}" Click="AddClick"/>
-            <Button Content="Отмена" Style="{StaticResource ViewButtonStule}" Click="CancleClick"/>
-        </StackPanel>
+        <Grid Grid.RowSpan="4" Name="loadAnimation" Background="White" Opacity="0.7" Visibility="Hidden">
+            <Image  HorizontalAlignment="Center" VerticalAlignment="Center"
+               gif:ImageBehavior.AutoStart="True" gif:ImageBehavior.AnimatedSource="/Resources/Loading.gif" />
+        </Grid>
     </Grid>
 </Window>

@@ -1,4 +1,5 @@
 ﻿using PAF.ViewModel;
+using PAF.ViewModel.BaseVM;
 using System.Windows;
 
 namespace PAF.View.Windows
@@ -8,10 +9,10 @@ namespace PAF.View.Windows
     /// </summary>
     public partial class SalayCompositionAdd : Window
     {
-        public SalayCompositionAdd()
+        public SalayCompositionAdd(IPage page)
         {
             InitializeComponent();
-            this.DataContext = new SalayCompositionVM();
+            this.DataContext = page;
         }
 
         private void StackPanel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

@@ -1,7 +1,7 @@
 ﻿using PAF.Commands.Base;
 using PAF.View.Pages;
-using System;
-using System.Windows;
+using PAF.View.Windows;
+using PAF.ViewModel.BaseVM;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -9,40 +9,32 @@ namespace PAF.ViewModel
 {
     class MainWindowVM : ViewModelForWindow
     {
-        /// <summary> основная таблица </summary>
-        public Page ContentPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
-        Page _ContentPage = new Client();
-        /// <summary> второстепенная таблица </summary>
-        public Page SubPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
-        Page _SubPage = new Client();
+        #region Properties
 
-        /// <summary> видно ли преключатель для второстепенной формы</summary>
-        public Visibility RadioButtonVisible { get => _RadioButtonVisible; set => Set(ref _RadioButtonVisible, value); }
-        Visibility _RadioButtonVisible = Visibility.Collapsed;
-
-        /// <summary> видно ли вторую таблицу </summary>
-        public Visibility SecondTable { get => _SecondTable; set => Set(ref _SecondTable, value); }
-        Visibility _SecondTable = Visibility.Hidden;
-
-       public bool ToggleButton
-        {
-            get => _ToggleButton;
-            set
+        public string Search 
+        { 
+            get => _Search; 
+            set 
             {
-                if (value)
-                {
-                    SecondTable = Visibility.Visible;
-                    MessageBox.Show("вторую таблицу видно");
-                }
-                else
-                {
-                    SecondTable = Visibility.Hidden;
-                    MessageBox.Show("вторую таблицу не видно");
-                }
-                Set(ref _ToggleButton, value);
+                Set(ref _Search, value);
+                Page.Refresh(Search);
             }
         }
-       bool _ToggleButton = false;
+        string _Search;
+
+        public IPage Page { get => _Page; set => Set(ref _Page, value); }
+        static IPage _Page = new ComponentVM();
+
+        /// <summary> основная таблица </summary>
+        public Page ContentPage { get => _ContentPage; set => Set(ref _ContentPage, value); }
+        Page _ContentPage = new Component(_Page);
+
+        public int Width { get => _Width; set => Set(ref _Width, value); }
+        static int _Width = 1150;
+
+        public int Height { get => _Height; set => Set(ref _Height, value); }
+        static int _Height = 600;
+        #endregion
 
         #region Commands
 
@@ -51,7 +43,8 @@ namespace PAF.ViewModel
         private bool CanLogoutExecute(object p) => true;
         private void OnLogoutExecuted(object p)
         {
-            MessageBox.Show("Hello");
+            new Login().Show();
+            CloseAction();
             // Сделать переход на форму авторизации
         }
         #endregion
@@ -70,8 +63,8 @@ namespace PAF.ViewModel
         private bool CanSClientsExecute(object p) => true;
         private void OnSClientsExecuted(object p)
         {
-            ContentPage = new Client();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new ClientVM();
+            ContentPage = new Client(_Page);
         }
         #endregion
 
@@ -80,8 +73,8 @@ namespace PAF.ViewModel
         private bool CanSelectSalesExecute(object p) => true;
         private void OnSelectSalesExecuted(object p)
         {
-            ContentPage = new Salay();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new SalayVM();
+            ContentPage = new Salay(Page);
         }
         #endregion
 
@@ -90,8 +83,8 @@ namespace PAF.ViewModel
         private bool CanSEmployeesExecute(object p) => true;
         private void OnSEmployeesExecuted(object p)
         {
-            ContentPage = new Employee();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new EmployeeVM();
+            ContentPage = new Employee(Page);
         }
         #endregion
 
@@ -100,8 +93,8 @@ namespace PAF.ViewModel
         private bool CanSelectDeliveriesExecute(object p) => true;
         private void OnSelectDeliveriesExecuted(object p)
         {
-            ContentPage = new Delivery();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new DeliveryVM();
+            ContentPage = new Delivery(Page);
         }
         #endregion
 
@@ -110,8 +103,8 @@ namespace PAF.ViewModel
         private bool CanSelectComponentsExecute(object p) => true;
         private void OnSelectComponentsExecuted(object p)
         {
-            ContentPage = new Component();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new ComponentVM();
+            ContentPage = new Component(Page);
         }
         #endregion
 
@@ -120,8 +113,8 @@ namespace PAF.ViewModel
         private bool CanSelectTypesExecute(object p) => true;
         private void OnSelectTypesExecuted(object p)
         {
-            ContentPage = new View.Pages.Type();
-            RadioButtonVisible = Visibility.Hidden;
+            Page = new TypeVM();
+            ContentPage = new View.Pages.Type(Page);
         }
         #endregion
 
@@ -130,8 +123,8 @@ namespace PAF.ViewModel
         private bool CanSelectSuppliesExecute(object p) => true;
         private void OnSelectSuppliesExecuted(object p)
         {
-            ContentPage = new Supply();
-            RadioButtonVisible = Visibility.Visible;
+            Page = new SupplyVM();
+            ContentPage = new Supply(Page);
         }
         #endregion
         #endregion
@@ -150,6 +143,9 @@ namespace PAF.ViewModel
             SelectTypes = new LambdaCommand(OnSelectTypesExecuted, CanSelectTypesExecute);
             SelectSupplies = new LambdaCommand(OnSelectSuppliesExecuted, CanSelectSuppliesExecute);
             #endregion
+
+            IPage page;
+            page = new ComponentVM();
         }
     }
 }

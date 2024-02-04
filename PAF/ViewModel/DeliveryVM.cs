@@ -1,21 +1,137 @@
 ﻿using PAF.Commands.Base;
-using PAF.Data;
 using PAF.Data.Entityies;
 using PAF.View.Windows;
-using System.Collections.Generic;
+using PAF.ViewModel.BaseVM;
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
 
 namespace PAF.ViewModel
 {
-    class DeliveryVM : ViewModelForWindow
+    class DeliveryVM : ViewModelForWindow, IPage
     {
+        #region Properties
+        public DataTable DataTable { get => _DataTable; set => Set(ref _DataTable, value); }
+        DataTable _DataTable;
+
+        public DataTable SubTable { get => _SubTable; set => Set(ref _SubTable, value); }
+        DataTable _SubTable;
+
+        public DataRowView SelectedDelivery
+        {
+            get => _SelectedDelivery;
+            set
+            {
+                Set(ref _SelectedDelivery, value);
+                if (SelectedDelivery != null)
+                {
+                    SubRefresh(SelectedDelivery.Row.ItemArray[0]);
+                }
+            }
+        }
+        DataRowView _SelectedDelivery;
+
         /// <summary>Пока прога работает с бд, лучше запретить все кнопки для работы с бд</summary>
         bool CanButtonClick = true;
 
-        Deliveries _AddDelivery = new Deliveries();
         /// <summary>Данные нового клиента</summary>
         public Deliveries AddDelivery { get => _AddDelivery; set => Set(ref _AddDelivery, value); }
+        Deliveries _AddDelivery = new Deliveries();
+        #endregion
+
+        public void Refresh()
+        {
+            string query = "select " +
+                                "d.Id Код, "+
+                                "s.Name Поставщик, " +
+                                "d.date 'Дата поставки', " +
+                                "sum(dc.Sum) 'Сумма поставки' " +
+                        "from Deliveries d " +
+                        "left join DeliveriesCompositions dc on dc.Delivery_Id = d.Id " +
+                        "left join Supplies s on s.Id = Supply_Id " +
+                        "group by d.Id, s.Name, d.date";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                    //DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Delivery");
+            }
+        }
+
+        public void Refresh(string search)
+        {
+            string query = "select " +
+                                "d.Id Код, "+
+                                "s.Name Поставщик, " +
+                                "d.date 'Дата поставки', " +
+                                "sum(dc.Sum) 'Сумма поставки' " +
+                            "from Deliveries d " +
+                                "left join DeliveriesCompositions dc on dc.Delivery_Id = d.Id " +
+                                "left join Supplies s on s.Id = Supply_Id " +
+                            "group by d.Id, s.Name, d.date " +
+                            $"having convert(varchar(max),d.Id) + ' ' + convert(varchar(max),s.Name) + ' ' + convert(varchar(max),d.date) + ' ' + convert(varchar(max),sum(dc.Sum)) like '%{search}%'";
+
+
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    DataTable = temp; //добавил temp чтобы срабатывал set у свойства
+                   // DataTable.Columns[0].ReadOnly = true;
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message, "Delivery");
+            }
+        }
+
+        private void SubRefresh(object id)
+        {
+            string subQuery =
+                        "select dc.Id Код, "+
+                                "c.[Name] Товар, " +
+                                "dc.Price Цена, " +
+                                "dc.Amount Количество, "+
+                                "dc.Sum Сумма, "+
+		                        "s.[Name] Поставщик "+
+                        "from DeliveriesCompositions dc "+
+                        "inner join Components c on c.Id = dc.Component_Id "+
+                        "inner join Deliveries d on dc.Delivery_id = d.Id "+
+                        "inner join Supplies s on s.Id = d.Supply_Id "+
+                        $"where d.Id = {(int)id}";
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DbConnectionString"].ConnectionString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter(subQuery, connection);
+                    DataTable temp = new DataTable();
+                    adapter.Fill(temp);
+                    SubTable = temp; //добавил temp чтобы срабатывал set у свойства
+                }
+
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message,"Delivery");
+            }
+        }
 
         #region Commands
 
@@ -26,21 +142,10 @@ namespace PAF.ViewModel
         private void OnSaveChangesExecuted(object p)
         {
             CanButtonClick = false;
-            //new SQL().UpdateClient(_Clients);
+            DeliveryAdd delivery = new DeliveryAdd();
+            delivery.ShowDialog();
             CanButtonClick = true;
-        }
-        #endregion
-
-        #region AddCommand
-        public ICommand AddCommand { get; set; }
-        private bool CanAddExecute(object p) => CanButtonClick;
-        private void OnAddExecuted(object p)
-        {
-            CanButtonClick = false;
-            //AddClient = new Clients();
-            DeliveryAdd deliveryAdd = new DeliveryAdd();
-            deliveryAdd.ShowDialog();
-            CanButtonClick = true;
+            Refresh();
         }
         #endregion
 
@@ -50,46 +155,20 @@ namespace PAF.ViewModel
         private void OnUpdateExecuted(object p)
         {
             CanButtonClick = false;
-            //Deliveries = new SQL().SelectClient();
-            CanButtonClick = true;
-        }
-        #endregion
-
-        #region DeleteCommand
-        public ICommand DeleteCommand { get; set; }
-        private bool CanDeleteExecute(object p) => CanButtonClick;
-        private void OnDeleteExecuted(object p)
-        {
-            CanButtonClick = false;
-            MessageBox.Show("Delete");
-            CanButtonClick = true;
-        }
-        #endregion
-
-        #region AddClientCommand
-        public ICommand AddClientCommand { get; set; }
-        private bool CanAddClientExecute(object p) => CanButtonClick;
-        private void OnAddClientExecuted(object p)
-        {
-            CanButtonClick = false;
-            //MessageBox.Show(AddClient.FirstName + " " + AddClient.LastName + " " + AddClient.MiddleName);
+            Refresh();
             CanButtonClick = true;
         }
         #endregion
         #endregion
-
-        public List<Deliveries> Deliveries { get => _Deliveries; set => Set(ref _Deliveries, value); }
-        List<Deliveries> _Deliveries = new SQL().SelectDelivery();
 
         public DeliveryVM()
         {
             #region Commands
             SaveChangesCommand = new LambdaCommand(OnSaveChangesExecuted, CanSaveChangesExecute);
-            AddCommand = new LambdaCommand(OnAddExecuted, CanAddExecute);
             UpdateCommand = new LambdaCommand(OnUpdateExecuted, CanUpdateExecute);
-            DeleteCommand = new LambdaCommand(OnDeleteExecuted, CanDeleteExecute);
-            AddClientCommand = new LambdaCommand(OnAddClientExecuted, CanAddClientExecute);
             #endregion
+
+            Refresh();
         }
     }
 }

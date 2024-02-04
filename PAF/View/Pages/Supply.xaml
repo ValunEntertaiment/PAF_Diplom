@@ -5,18 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PAF.View.Pages" 
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      Height="450" Width="800">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="45"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Supplies, Mode=OneWay}" SelectionMode="Single"/>
+        <DataGrid ItemsSource="{Binding DataTable, Mode=OneWay}"
+                  SelectionMode="Single" CanUserAddRows="False"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button ToolTip="Сохранить внесенные изменения" Margin="0 0 100 0" Content="Внести изменения" Command="{Binding SaveChangesCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Добавить новую запись" Margin="0 0 100 0" Content="Добавить" Command="{Binding AddCommand}" Style="{StaticResource ViewButtonStule}"/>
-            <Button ToolTip="Удалить выбранную запись" Margin="0 0 100 0" Content="Удалить" Command="{Binding DeleteCommand}" Style="{StaticResource ViewButtonStule}"/>
             <Button ToolTip="Обновить данные без сохранения изменений" Content="Обновить" Command="{Binding UpdateCommand}" Style="{StaticResource ViewButtonStule}"/>
         </StackPanel>
     </Grid>
